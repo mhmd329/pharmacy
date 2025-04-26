@@ -1,5 +1,4 @@
 'use client'
-
 import { useEffect, useState } from "react";
 import Products from "../Home/Products/Products";
 import styles from "./Products.module.css";
