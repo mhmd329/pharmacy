@@ -36,7 +36,6 @@ export const useSearchProducts = (searchTerm) => {
         const response = await fetch('https://clinics.soulnbody.net/pharmacy/public/api/all_products', {
           headers: {
             ...getAuthHeader()
-          //  Authorization: `bearer 43|cIUAxxu3E0K44sn2WhR4SiWEZonJEmrJLBaEeWqJbd4442ef`
 
           },
         });

@@ -295,7 +295,7 @@ export const useOrdersData = () => {
           headers: {
             ...getAuthHeader(),
             
-          //  Authorization: `bearer 26|GBxw0Z7Cgjzp1HAqDKQaQjVO33gfR3nN6Z4pRWHe8ef8d986`
+
           },
         });
 
@@ -327,7 +327,6 @@ export const useFinancial = () => {
           {
             headers: {
                ...getAuthHeader(),
-              // Authorization : `bearer 24|jpD6HrArSjRdsXKlMIXDRgX3PrrpR2aqMneXyyvf2cf9224f`
             },
           }
         );
