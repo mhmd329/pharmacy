@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { removeFromCart, increaseQuantity, decreaseQuantity } from "@/store/slices/cart";
+import { removeFromCart, increaseQuantity, decreaseQuantity } from "@/store/slices/Caart";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Image from "next/image";
 import Link from "next/link";

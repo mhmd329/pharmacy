@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
-import { addToCart } from "@/store/slices/cart";
+import { addToCart } from "@/store/slices/Caart";
 import { openModal } from "@/store/slices/modal";
 import { getCookie } from 'cookies-next'; // لازم تضيف الاستيراد فوق
 

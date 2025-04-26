@@ -1,6 +1,6 @@
 "use client";
 import { useDispatch } from "react-redux";
-import { addToCart } from "@/store/slices/cart";
+import { addToCart } from "@/store/slices/Caart";
 import { useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import Products from "../Home/Products/Products";

@@ -2,7 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import modalReducer from './slices/modal';
 import sidebarReducer from './slices/sidebarSlice';
 import authReducer from './slices/auth';
-import cartReducer from './slices/cart';
+import cartReducer from './slices/Caart';
 
 const rootReducer = combineReducers({
   modal: modalReducer,
