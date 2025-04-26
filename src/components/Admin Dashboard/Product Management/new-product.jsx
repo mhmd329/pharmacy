@@ -366,32 +366,32 @@ const AddNewProduct = () => {
           </div>
         </div>
 
-        {/* صور المنتج */}
-        <div>
-          <div className="bg-white p-6 mt-10 rounded-xl border border-gray-300">
-            <h2 className="text-lg font-bold mb-4">صور المنتج</h2>
-            {errors.images && (
-              <p className="text-red-500 text-sm mb-4">{errors.images}</p>
-            )}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <ImageUploadField index={0} label="الصورة الرئيسية" />
-              <ImageUploadField index={1} label="صورة إضافية 1" />
-              <ImageUploadField index={2} label="صورة إضافية 2" />
-              <ImageUploadField index={3} label="صورة إضافية 3" />
-            </div>
-          </div>
+      {/* صور المنتج */}
+<div>
+  <div className="bg-white p-6 mt-10 rounded-xl border border-gray-300">
+    <h2 className="text-lg font-bold mb-4">صور المنتج</h2>
+    {errors.images && (
+      <p className="text-red-500 text-sm mb-4">{errors.images}</p>
+    )}
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <ImageUploadField index={0} label="الصورة الرئيسية" />
+      <ImageUploadField index={1} label="صورة إضافية 1" />
+      <ImageUploadField index={2} label="صورة إضافية 2" />
+      <ImageUploadField index={3} label="صورة إضافية 3" />
+    </div>
+  </div>
 
-          {/* زرار رفع */}
-          <div className="flex items-center gap-3 mt-5">
-            <button
-              type="submit"
-              disabled={isPending}
-              className="bg-[#ee446e] text-white px-4 py-2 rounded-lg disabled:opacity-50"
-            >
-              {isPending ? "جاري التحميل..." : "رفع المنتج"}
-            </button>
-          </div>
-        </div>
+  {/* زرار رفع */}
+  <div className="flex items-center gap-3 mt-5">
+    <button
+      type="submit"
+      disabled={isPending}
+      className="bg-[#ee446e] text-white px-4 py-2 rounded-lg disabled:opacity-50"
+    >
+      {isPending ? "جاري التحميل..." : "رفع المنتج"}
+    </button>
+  </div>
+</div>
       </form>
     </>
   );

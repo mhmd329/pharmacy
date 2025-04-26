@@ -28,14 +28,12 @@ const Sidebar = () => {
     <>
       <div
         onClick={() => dispatch(closeSidebar())}
-        className={`cursor-pointer md:hidden fixed top-0 left-0 w-screen h-screen z-40 bg-black/50 ${
-          isSidebarOpen ? "block" : "hidden"
-        }`}
+        className={`cursor-pointer md:hidden fixed top-0 left-0 w-screen h-screen z-40 bg-black/50 ${isSidebarOpen ? "block" : "hidden"
+          }`}
       ></div>
       <div
-        className={`lg:relative md:block ${
-          isSidebarOpen ? "fixed" : "hidden"
-        } start-0 top-0 z-50 w-80 bg-white h-screen shadow-lg p-4 flex flex-col`}
+        className={`lg:relative md:block ${isSidebarOpen ? "fixed" : "hidden"
+          } start-0 top-0 z-50 w-80 bg-white h-screen shadow-lg p-4 flex flex-col`}
       >
         <div
           className="md:hidden font-extrabold text-2xl"
@@ -54,86 +52,86 @@ const Sidebar = () => {
 
         <nav className="mt-5">
           <ul className="space-y-2">
-            <li
-              className={`flex items-center p-2 text-gray-700 ${
-                pathname === "/admin" ? "bg-pink-100" : "hover:bg-pink-100"
-              } rounded-lg`}
-            >
-              <Link href="/admin" className="flex items-center gap-2">
-                <FaHome className="mr-2" /> لوحة التحكم
-              </Link>
-            </li>
-
-            <li className="flex flex-col">
-              <div
-                className={`flex items-center justify-between p-2 text-gray-700 rounded-lg cursor-pointer ${
-                  openSubMenu ? "bg-pink-100" : "hover:bg-pink-100"
-                }`}
-                onClick={() => setOpenSubMenu(!openSubMenu)}
+            <Link href="/admin" className="flex items-center gap-2">
+              <li
+                className={`flex items-center p-2 text-gray-700 ${pathname === "/admin" ? "bg-pink-100" : "hover:bg-pink-100"
+                  } rounded-lg`}
               >
-                <Link
-                  href="/admin/product-management"
-                  className="flex items-center justify-between gap-2 w-full"
+                <FaHome className="mr-2" /> لوحة التحكم
+              </li>
+            </Link>
+
+            <Link
+              href="/admin/product-management"
+              className="flex items-center justify-between gap-2 w-full"
+            >
+              <li className="flex flex-col">
+                <div
+                  className={`flex items-center justify-between p-2 text-gray-700 rounded-lg cursor-pointer ${openSubMenu ? "bg-pink-100" : "hover:bg-pink-100"
+                    }`}
+                  onClick={() => setOpenSubMenu(!openSubMenu)}
                 >
+
                   <div className="flex items-center gap-2">
                     <FaBox className="mr-2" /> إدارة المنتجات
                   </div>
-                 
-                </Link>
-              </div>
-         
-            </li>
 
-            <li
-              className={`flex items-center p-2 text-gray-700 ${
-                pathname === "/admin/financial-transactions"
+                </div>
+
+              </li>
+            </Link>
+
+            <Link
+              href="/admin/financial-transactions"
+              className="flex items-center gap-2"
+            >
+              <li
+                className={`flex items-center p-2 text-gray-700 ${pathname === "/admin/financial-transactions"
                   ? "bg-pink-100"
                   : "hover:bg-pink-100"
-              } rounded-lg`}
-            >
-              <Link
-                href="/admin/financial-transactions"
-                className="flex items-center gap-2"
+                  } rounded-lg`}
               >
+
                 <FaMoneyCheckAlt className="mr-2" /> تحويلات مالية (500)
-              </Link>
-            </li>
+              </li>
+            </Link>
 
-            <li
-              className={`flex items-center p-2 text-gray-700 ${
-                pathname === "/admin/orders"
+            <Link href="/admin/orders" className="flex items-center gap-2">
+
+              <li
+                className={`flex items-center p-2 text-gray-700 ${pathname === "/admin/orders"
                   ? "bg-pink-100"
                   : "hover:bg-pink-100"
-              } rounded-lg`}
-            >
-              <Link href="/admin/orders" className="flex items-center gap-2">
+                  } rounded-lg`}
+              >
                 <FaClipboardList className="mr-2" /> الطلبات (151)
-              </Link>
-            </li>
+              </li>
+            </Link>
 
-            <li
-              className={`flex items-center p-2 text-gray-700 ${
-                pathname === "/admin/customers"
+            <Link href="/admin/customers" className="flex items-center gap-2">
+
+              <li
+                className={`flex items-center p-2 text-gray-700 ${pathname === "/admin/customers"
                   ? "bg-pink-100"
                   : "hover:bg-pink-100"
-              } rounded-lg`}
-            >
-              <Link href="/admin/customers" className="flex items-center gap-2">
+                  } rounded-lg`}
+              >
                 <FaUsers className="mr-2" /> العملاء (200)
-              </Link>
-            </li>
+              </li>
+            </Link>
 
-            <li
-              className={`flex items-center p-2 text-gray-700 ${
-                pathname === "/admin/profile"
+            <Link href="/admin/profile" className="flex items-center gap-2">
+
+              <li
+                className={`flex items-center p-2 text-gray-700 ${pathname === "/admin/profile"
                   ? "bg-pink-100"
                   : "hover:bg-pink-100"
-              } rounded-lg`}
-            >
-              <Link href="/admin/profile" className="flex items-center gap-2">
+                  } rounded-lg`}
+              >
                 <FaCog className="mr-2" /> الحساب والإعدادات
-              </Link>
-            </li>
+              </li>
+            </Link>
+
           </ul>
         </nav>
       </div>
