@@ -15,20 +15,19 @@ const HeroSection = () => {
   const { data: products, isLoading } = useSearchProducts(searchTerm);
 
   const handleSearch = () => {
+    setSearchTerm(input);
     if (input.trim() !== "") {
       setSearchTerm(input);
-      setShowDropdown(true); // Show the dropdown when search is triggered
     }
   };
-
   const handleOpen = () => {
     setShowDropdown(true);
-  };
-
+  }
+  
   const handleClose = () => {
     setShowDropdown(false);
-  };
-
+  }
+  
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setShowDropdown(false);
@@ -52,7 +51,6 @@ const HeroSection = () => {
     if (path.startsWith("/")) return path;
     return `https://clinics.soulnbody.net/pharmacy/storage/app/public/${path}`;
   };
-
   return (
     <div className={`${styles["hero-section"]} h-screen flex justify-center items-center`}>
       <div className="wrapper flex flex-col items-center gap-3">
@@ -64,22 +62,20 @@ const HeroSection = () => {
         </p>
 
         <div dir="rtl" className="input-wrapper flex relative w-full max-w-md">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            className={`${styles["search-input"]} border-[#EE446E] border-2 w-full px-[30px] py-[8px]`}
-            placeholder="ابحث عن منتج"
-          />
           <button
-            onClick={handleSearch}
-            className={`${styles["search-btn"]} w-50 py-[8px]`}
+            onClick={handleOpen}
+            className={`${styles["search-input"]} cursor-pointer border-[#EE446E] border-2 w-full px-[30px] py-[8px]`}
+          ></button>
+
+          <button
+            onClick={handleOpen}
+            className={`${styles["search-btn"]}  w-50 py-[8px]`}
           >
             بحث
           </button>
 
           {showDropdown && (
-            <div className="fixed inset-0 min-h-[900px] bg-black/40 z-50 flex justify-center items-start">
+            <div  className="fixed inset-0 min-h-[900px] bg-black/40 z-50 flex justify-center items-start">
               <div
                 ref={dropdownRef}
                 className="bg-white w-[90%] max-w-4xl rounded-xl p-6 shadow-lg"
@@ -110,7 +106,10 @@ const HeroSection = () => {
                   </button>
                 </div>
 
-                <div className="flex gap-4 overflow-x-auto whitespace-nowrap">
+                <div
+                  className="flex gap-4 overflow-x-auto whitespace-nowrap"
+                  style={{ direction: "ltr" }}
+                >
                   {isLoading ? (
                     <p className="text-center w-full">جارٍ البحث...</p>
                   ) : matchedProducts?.length > 0 ? (
@@ -119,7 +118,7 @@ const HeroSection = () => {
                       return (
                         <Link
                           key={product.id}
-                          href={`/our-products/${product.id}`}
+                          onClick={() => dispatch(closeModal())} href={`/our-products/${product.id}`}
                           className="min-w-[250px] max-w-[250px] bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-200 flex-shrink-0 flex flex-col"
                         >
                           <div className="relative h-[200px] w-full">
@@ -158,6 +157,7 @@ const HeroSection = () => {
               </div>
             </div>
           )}
+
         </div>
       </div>
     </div>
