@@ -1,0 +1,40 @@
+.hero-section {
+  background: linear-gradient(
+      0deg,
+      rgba(227, 174, 177, 0.4),
+      rgba(227, 174, 177, 0.4)
+    ),
+    url("/imgs/home-bg.png") center center/cover;
+}
+
+.hero-section .heading {
+  color: #1c070a;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.hero-section .desc {
+  color: rgba(0, 0, 0, 0.7);
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.search-input {
+  border-radius: 8px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  background: #fff;
+  outline: none;
+}
+.search-btn {
+  color: #fff;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.2px;
+  background: #ee446e;
+  border-radius: 8px 0px 0px 8px;
+  cursor: pointer;
+}

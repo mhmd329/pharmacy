@@ -1,0 +1,20 @@
+.category-card {
+    min-width: 15.625rem;
+    height: 16.875rem;
+}
+.makeup{
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.40) 0%, rgba(0, 0, 0, 0.40) 100%), url(/imgs/categories/make-up.jpg) center center/cover;
+}
+.medicines{
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.40) 0%, rgba(0, 0, 0, 0.40) 100%), url(/imgs/categories/medicines.jpg) center center/cover;
+}
+
+.hide-scrollbar-x {
+    overflow-x: auto;
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+  }
+  .hide-scrollbar-x::-webkit-scrollbar {
+    height: 0;
+    display: none;
+  }

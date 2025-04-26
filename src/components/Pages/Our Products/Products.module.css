@@ -1,0 +1,33 @@
+.options-wrapper {
+  display: flex;
+  padding: 20px 10px 30px 10px;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  border-radius: 6px;
+  background: #fff;
+
+  /* light shadow */
+  box-shadow: 0px 2px 10px 0px rgba(185, 166, 189, 0.1);
+}
+
+.options-wrapper .heading {
+  color: #383838;
+  font-family: Tajawal;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase;
+}
+
+.options-wrapper .product-options {
+  display: flex;
+  width: 100%;
+  padding: 10px 20px 10px 0px;
+  align-items: center;
+  gap: 16px;
+  border-top: 1px solid #dfe1e3;
+  border-bottom: 1px solid #dfe1e3;
+  background: #fff;
+}

@@ -1,0 +1,110 @@
+@import "tailwindcss";
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+@import "swiper/css/scrollbar";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+/* Hide default Swiper navigation buttons */
+.custom-swiper .products-swiper-button-next,
+.custom-swiper .products-swiper-button-prev {
+  display: none;
+}
+
+/* ===== Products Section Buttons ===== */
+.products-swiper-button-prev,
+.products-swiper-button-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  cursor: pointer;
+  background: white;
+  border-radius: 50%;
+  padding: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  transition: background-color 0.2s ease;
+}
+
+.products-swiper-button-prev {
+  left: -5rem;
+}
+
+.products-swiper-button-next {
+  right: -5rem;
+}
+
+.products-swiper-button-prev:hover,
+.products-swiper-button-next:hover {
+  background-color: #f3f4f6;
+}
+@media (max-width: 768px) {
+  .products-swiper-button-prev,
+  .products-swiper-button-next {
+    top: auto;
+    bottom: -2.5rem; /* قربتهم شوي من السلايدر */
+    transform: none;
+  }
+
+  .products-swiper-button-prev {
+    left: 1rem; /* خلى الزر بعيد عن النص */
+  }
+
+  .products-swiper-button-next {
+    right: 1rem; /* نفس الكلام هنا */
+  }
+}
+
+
+/* ===== Categories Section Buttons ===== */
+.categories-swiper-button-prev,
+.categories-swiper-button-next {
+  display: none;
+}
+
+/* ===== Categories Section Buttons ===== */
+.categories-swiper-button-prev,
+.categories-swiper-button-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  cursor: pointer;
+  background: white;
+  border-radius: 50%;
+  padding: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  transition: background-color 0.2s ease;
+}
+
+.categories-swiper-button-prev {
+  left: -5rem;
+}
+
+.categories-swiper-button-next {
+  right: -5rem;
+}
+
+.categories-swiper-button-prev:hover,
+.categories-swiper-button-next:hover {
+  background-color: #f3f4f6;
+}
+@media (max-width: 768px) {
+  .categories-swiper-button-prev,
+  .categories-swiper-button-next {
+    top: auto;
+    bottom: -2.5rem; /* قربتهم شوي من السلايدر */
+    transform: none;
+  }
+
+  .categories-swiper-button-prev {
+    left: 3rem; /* خلى الزر بعيد عن النص */
+  }
+
+  .categories-swiper-button-next {
+    right: 3rem; /* نفس الكلام هنا */
+  }
+}

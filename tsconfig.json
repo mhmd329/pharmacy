@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmit": true,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/layouts/AdminLayout.jsx",
+    "src/layouts/LayoutSelector.jsx",
+    "src/components/Admin Dashboard/Sidebar/Sidebar.jsx",
+    "src/store/slices/sidebarSlice.js",
+    "src/components/Admin Dashboard/Product Management 2/ProductTabs.jsx",
+    "src/components/Admin Dashboard/Product Management 2/SkinCareTable.jsx",
+    "src/components/Admin Dashboard/Product Management 2/PerfumeTable.jsx",
+    "src/components/Admin Dashboard/Product Management 2/HairCareTable.jsx",
+    "src/components/Admin Dashboard/Sidebar/Sidebar copy.jsx"
+, "src/app/admin/product-management/add-new-product/page.jsx", "src/app/admin/product-management/page.jsx", "src/components/Admin Dashboard/Admin Profile/sections/AdminProfileForm.jsx", "src/components/Admin Dashboard/Admin Profile/AdminProfile.tsx"  ],
+  "exclude": ["node_modules"]
+}
