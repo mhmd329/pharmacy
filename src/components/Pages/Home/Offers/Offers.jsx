@@ -15,7 +15,7 @@ const Offers = () => {
     return <p>حدث خطأ أثناء تحميل العروض</p>;
   }
 
-  const offer = data?.data[5];
+  const offer = data?.data?.[data.data.length - 1];
 
   if (!offer) {
     return <p>لا توجد عروض متاحة حالياً</p>;
