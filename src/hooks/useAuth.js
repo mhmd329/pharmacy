@@ -100,17 +100,23 @@ export const useCreateProduct = () => {
   });
 };
 
-export const useCreateOffer = () => {
+export const useUpdatePro = () => {
   return useMutation({
-    mutationFn: async ({ formData }) => {
-      return fetcher('offers', {
+    mutationFn: async ({ formData, productId }) => {
+      return fetcher(`products/${productId}/update`, {
         method: "POST",
-        headers: { ...getAuthHeader() },
-        body: formData,
+        headers: {
+           ...getAuthHeader(),
+          // Authorization : "Bearer 43|cIUAxxu3E0K44sn2WhR4SiWEZonJEmrJLBaEeWqJbd4442ef",
+         "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData), // تحويل formData إلى JSON
       });
     },
   });
 };
+
+
 
 export const useRegisterUser = () => {
   return useMutation({
@@ -210,6 +216,19 @@ export const useFinancial = () => {
     queryKey: ["money_transfers"],
     queryFn: async () => {
       return fetcher('money-transfers', {
+        headers: getAuthHeader(),
+      });
+    },
+    staleTime: 1000 * 60 * 5,
+    keepPreviousData: true,
+  });
+};
+
+export const useDashboardStats = () => {
+  return useQuery({
+    queryKey: ["stats"],
+    queryFn: async () => {
+      return fetcher('admin/getDashboardStats', {
         headers: getAuthHeader(),
       });
     },

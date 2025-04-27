@@ -25,10 +25,10 @@ const OrdersTable = () => {
     return orders
       .filter((order) => {
         if (activeTab === "قيد الانتظار") return order.status === "pending";
+        if (activeTab === "يتم المعالجة") return order.status === "processing";
         if (activeTab === "تم الشحن") return order.status === "shipped";
         if (activeTab === "تم التوصيل") return order.status === "delivered";
-        if (activeTab === "مؤكدة") return order.status === "confirmed";
-        if (activeTab === "يتم المعالجة") return order.status === "in progress";
+        // if (activeTab === "مؤكدة") return order.status === "confirmed";
         if (activeTab === "ملغي") return order.status === "cancelled";
         return true;
       })
@@ -50,10 +50,10 @@ const OrdersTable = () => {
 
   const allStatusOptions = [
     "pending",
+    "processing",
     "shipped",
     "delivered",
-    "confirmed",
-    "in progress",
+    // "confirmed",
     "cancelled",
   ];
 
@@ -91,7 +91,7 @@ const OrdersTable = () => {
   return (
     <div className="bg-white md:p-6 p-4 rounded-xl border-b border-[#DFE1E3]">
       <OrderStatusTabs activeTab={activeTab} onTabChange={handleTabChange} />
-      
+
       <div className="flex flex-col md:flex-row justify-between items-center mt-4 gap-4">
         <select
           value={sortOrder}

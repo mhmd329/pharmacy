@@ -83,10 +83,10 @@ const Products = ({ title, relatedProducts }) => {
               ))}
             </Swiper>
 
-            <button className="products-swiper-button-next absolute top-1/2 left-5 sm:-left-10 transform -translate-y-1/2 z-10 bg-white rounded-full shadow-md hover:bg-gray-100 transition-all duration-300">
+            <button className="products-swiper-button-prev absolute top-1/2 left-5 sm:-left-10 transform -translate-y-1/2 z-10 bg-white rounded-full shadow-md hover:bg-gray-100 transition-all duration-300">
               <LuChevronLeft className="text-3xl text-[#EE446E]" />
             </button>
-            <button className="products-swiper-button-prev absolute top-1/2 right-5 sm:-right-10 transform -translate-y-1/2 z-10 bg-white rounded-full shadow-md hover:bg-gray-100 transition-all duration-300">
+            <button className="products-swiper-button-next absolute top-1/2 right-5 sm:-right-10 transform -translate-y-1/2 z-10 bg-white rounded-full shadow-md hover:bg-gray-100 transition-all duration-300">
               <LuChevronRight className="text-3xl text-[#EE446E]" />
             </button>
 

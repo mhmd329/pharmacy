@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import { closeModal } from "@/store/slices/modal";
 import { IoClose } from "react-icons/io5";
@@ -7,6 +7,7 @@ import { useRegisterUser } from "@/hooks/useAuth";
 import { toast } from "react-hot-toast";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { openModal } from "@/store/slices/modal";  // إضافة دالة لفتح الـ login
 
 const SignUp = () => {
     const dispatch = useDispatch();
@@ -41,7 +42,8 @@ const SignUp = () => {
             }, {
                 onSuccess: () => {
                     toast.success("تم التسجيل بنجاح!");
-                    dispatch(closeModal());
+                    dispatch(closeModal()); // إغلاق الـ signUp
+                    dispatch(openModal("login")); // فتح الـ login مباشرة
                 },
                 onError: (error) => {
                     toast.error(error.message || "حدث خطأ أثناء التسجيل");

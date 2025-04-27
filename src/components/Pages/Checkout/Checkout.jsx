@@ -1,8 +1,10 @@
 "use client";
 import { useState } from "react";
 import { LuMoveRight } from "react-icons/lu";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useCreateOrder } from "@/hooks/useAuth";
+import { clearCart } from "@/store/slices/Caart";  
+import { useRouter } from "next/navigation"; 
 import Image from "next/image";
 
 const CheckoutPage = () => {
@@ -18,6 +20,8 @@ const CheckoutPage = () => {
     const [notification, setNotification] = useState({ message: '', type: '' });
     
     const cartItems = useSelector(state => state.cart.cart);
+    const dispatch = useDispatch();
+    const router = useRouter();
 
     const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
     const shippingCost = 4.00;
@@ -59,7 +63,13 @@ const CheckoutPage = () => {
             onSuccess: (data) => {
                 setNotification({ message: "تم إنشاء الطلب بنجاح ✅", type: "success" });
                 console.log(data);
-                setTimeout(() => setNotification({ message: '', type: '' }), 3000); // Hide after 3 seconds
+                
+                // بعد نجاح الطلب:
+                dispatch(clearCart());  // لتفريغ عربة التسوق
+                setTimeout(() => {
+                    setNotification({ message: '', type: '' });
+                    router.push('/');  // التوجه إلى الصفحة الرئيسية بعد 3 ثواني
+                }, 0.3); // Hide after 3 seconds
             },
             onError: (err) => {
                 setNotification({ message: "حدث خطأ أثناء إنشاء الطلب ❌", type: "error" });
@@ -68,6 +78,7 @@ const CheckoutPage = () => {
             },
         });
     };
+
     return (
         <div className="pt-40">
              {/* Notification Toast */}
@@ -253,11 +264,10 @@ const CheckoutPage = () => {
                             ))}
                         </ul>
                     </div>
-
-
                 </div>
             </div>
-        </div>);
-}
+        </div>
+    );
+};
 
 export default CheckoutPage;

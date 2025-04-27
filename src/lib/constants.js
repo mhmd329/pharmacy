@@ -8,10 +8,10 @@ export const orderStatusTabs = [
 ];
 export const ordersStatus = {
   "قيد الانتظار": "pending",
+  "يتم المعالجة": "processing",
   "تم الشحن": "shipped",
   "تم التوصيل": "delivered",
-  مؤكدة: "confirmed",
-  "يتم المعالجة": "in progress",
+  // مؤكدة: "confirmed",
   ملغي: "cancelled",
 };
 export const ordersData = [
@@ -40,7 +40,7 @@ export const ordersData = [
     total_price: 1200,
     profit: 300,
     profitPercent: "25%",
-    status: "in progress",
+    status: "processing",
   },
   {
     id: 4,

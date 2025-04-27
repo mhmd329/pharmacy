@@ -25,12 +25,14 @@ const cartSlice = createSlice({
         item.quantity += 1;
       }
     },
-    
     decreaseQuantity: (state, action) => {
       const item = state.cart.find(item => item.id === action.payload);
       if (item && item.quantity > 1) {
         item.quantity -= 1;
       }
+    },
+    clearCart: (state) => {
+      state.cart = [];
     },
   },
 });
@@ -40,6 +42,7 @@ export const {
   removeFromCart,
   increaseQuantity,
   decreaseQuantity,
+  clearCart, // إضافة الaction هنا
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

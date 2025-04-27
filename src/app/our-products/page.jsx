@@ -1,7 +1,7 @@
 // app/our-products/page.jsx
 'use client'
 import { Suspense } from 'react'
-import OurProductsPage from "@/components/Pages/Our Products/OurProducts"
+import OurProductsPage from "@/components/Pages/Our Products/Products"
 
   function Page() {
   return (
