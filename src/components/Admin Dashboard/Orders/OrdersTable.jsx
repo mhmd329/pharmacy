@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState, useMemo } from "react";
 import { useOrdersData } from "@/hooks/useAuth";
@@ -9,6 +8,7 @@ import OrderRow from "./components/order-table-row";
 import OrderDetailsRow from "./components/order-details-row";
 import Pagination from "./components/pagination";
 import { useUpdateStatus } from "@/hooks/useAuth";
+
 const ITEMS_PER_PAGE = 5;
 
 const OrdersTable = () => {
@@ -17,7 +17,7 @@ const OrdersTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedOrderId, setExpandedOrderId] = useState(null);
   const { mutate: updateStatus } = useUpdateStatus();
-  const [sortOrder, setSortOrder] = useState("تصفية بالتاريخ"); // أو "oldest"
+  const [sortOrder, setSortOrder] = useState("تصفية بالتاريخ");
 
   const { data: orders = [], isLoading, isError } = useOrdersData();
 
@@ -48,7 +48,6 @@ const OrdersTable = () => {
       });
   }, [orders, activeTab, searchTerm, sortOrder]);
 
-
   const allStatusOptions = [
     "pending",
     "shipped",
@@ -57,13 +56,12 @@ const OrdersTable = () => {
     "in progress",
     "cancelled",
   ];
+
   const handleStatusChange = (orderId, newStatus) => {
     const formData = new FormData();
     formData.append("status", newStatus);
     updateStatus({ orderId, formData });
   };
-
-
 
   const totalPages = Math.ceil(filteredOrders.length / ITEMS_PER_PAGE);
   const paginatedOrders = useMemo(() => {
@@ -91,16 +89,16 @@ const OrdersTable = () => {
   if (isError) return <p className="text-center p-6 text-red-500">حدث خطأ أثناء تحميل الطلبات</p>;
 
   return (
-    <div className="bg-white md:p-6 rounded-xl border-b border-[#DFE1E3]">
+    <div className="bg-white md:p-6 p-4 rounded-xl border-b border-[#DFE1E3]">
       <OrderStatusTabs activeTab={activeTab} onTabChange={handleTabChange} />
-      <div className="flex justify-between items-center">
-
+      
+      <div className="flex flex-col md:flex-row justify-between items-center mt-4 gap-4">
         <select
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value)}
-          className="border w-26 h-12 border-[#EE446E] rounded-md text-sm"
+          className="border w-full md:w-1/4 h-12 border-[#EE446E] rounded-md text-sm"
         >
-         <option disabled> تصفية بالتاريخ</option>
+          <option disabled> تصفية بالتاريخ</option>
           <option value="newest">من الأحدث إلى الأقدم</option>
           <option value="oldest">من الأقدم إلى الأحدث</option>
         </select>
@@ -108,8 +106,7 @@ const OrdersTable = () => {
         <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
       </div>
 
-
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto mt-6">
         <table className="w-full min-w-[850px] border-collapse rounded-lg overflow-hidden">
           <OrderTableHeader />
           <tbody>
@@ -123,8 +120,6 @@ const OrdersTable = () => {
                     onStatusChange={handleStatusChange}
                     statusOptions={allStatusOptions}
                   />
-
-
                   {expandedOrderId === order.shopping_id && (
                     <OrderDetailsRow order={order} />
                   )}

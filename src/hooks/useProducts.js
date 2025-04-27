@@ -1,59 +1,46 @@
-import { useQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query";
 import { getCookie } from "cookies-next";
+
 
 const getAuthHeader = () => {
   const token = getCookie('token');
   return { Authorization: `Bearer ${token}` };
 };
+
+// دالة مشتركة لجلب البيانات
+const fetchData = async (url, headers = {}) => {
+  try {
+    const response = await fetch(url, { headers });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return null;
+  }
+};
+
+// استخدامات الـ query
+
 export const useProducts = () => {
   return useQuery({
     queryKey: ["products"],
-    queryFn: async () => {
-      try {
-        const response = await fetch("https://clinics.soulnbody.net/pharmacy/public/api/pro");
-        if (!response.ok) {
-          console.error("Network response was not ok", response);
-          return null;
-        }
-        return response.json();
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        return null;
-      }
-    },
+    queryFn: () => fetchData("https://clinics.soulnbody.net/pharmacy/public/api/pro"),
     staleTime: 1000 * 60 * 5,
     keepPreviousData: true,
-
   });
-}
+};
+
 export const useSearchProducts = (searchTerm) => {
   return useQuery({
     queryKey: ["search-products", searchTerm],
     queryFn: async () => {
-
-
-      try {
-        const response = await fetch('https://clinics.soulnbody.net/pharmacy/public/api/all_products', {
-          headers: {
-            ...getAuthHeader()
-
-          },
-        });
-        if (!response.ok) {
-          console.error("Network response was not ok", response);
-          return [];
-        }
-        const allProducts = await response.json();
-
-        if (!searchTerm) return [];
-
-        return allProducts.filter((product) =>
-          product.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-      } catch (error) {
-        console.error("Error fetching search products:", error);
-        return [];
-      }
+      if (!searchTerm) return [];
+      const allProducts = await fetchData("https://clinics.soulnbody.net/pharmacy/public/api/all_products", getAuthHeader());
+      return allProducts.filter(product =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     },
     enabled: !!searchTerm,
     staleTime: 1000 * 60 * 5,
@@ -65,19 +52,7 @@ export const useProductDetails = (id) => {
     queryKey: ["product", id],
     queryFn: async () => {
       if (!id) return null;
-      try {
-        const response = await fetch(
-          `https://clinics.soulnbody.net/pharmacy/public/api/pro/${id}`
-        );
-        if (!response.ok) {
-          console.error("Network response was not ok", response);
-          return null;
-        }
-        return response.json();
-      } catch (error) {
-        console.error("Error fetching product details:", error);
-        return null;
-      }
+      return await fetchData(`https://clinics.soulnbody.net/pharmacy/public/api/pro/${id}`);
     },
     enabled: !!id,
     staleTime: 1000 * 60 * 5,
@@ -87,21 +62,7 @@ export const useProductDetails = (id) => {
 export const useRecentProducts = () => {
   return useQuery({
     queryKey: ["recent-products"],
-    queryFn: async () => {
-      try {
-        const response = await fetch(
-          "https://clinics.soulnbody.net/pharmacy/public/api/recently-added"
-        );
-        if (!response.ok) {
-          console.error("Network response was not ok", response);
-          return [];
-        }
-        return response.json();
-      } catch (error) {
-        console.error("Error fetching recent products:", error);
-        return [];
-      }
-    },
+    queryFn: () => fetchData("https://clinics.soulnbody.net/pharmacy/public/api/recently-added"),
     staleTime: 1000 * 60 * 5,
   });
 };
@@ -109,21 +70,7 @@ export const useRecentProducts = () => {
 export const useMostSoldProducts = () => {
   return useQuery({
     queryKey: ["most-sold-products"],
-    queryFn: async () => {
-      try {
-        const response = await fetch(
-          "https://clinics.soulnbody.net/pharmacy/public/api/most-sold"
-        );
-        if (!response.ok) {
-          console.error("Network response was not ok", response);
-          return [];
-        }
-        return response.json();
-      } catch (error) {
-        console.error("Error fetching most sold products:", error);
-        return [];
-      }
-    },
+    queryFn: () => fetchData("https://clinics.soulnbody.net/pharmacy/public/api/most-sold"),
     staleTime: 1000 * 60 * 5,
   });
 };
@@ -131,21 +78,7 @@ export const useMostSoldProducts = () => {
 export const useCategories = () => {
   return useQuery({
     queryKey: ["categories"],
-    queryFn: async () => {
-      try {
-        const response = await fetch(
-          "https://clinics.soulnbody.net/pharmacy/public/api/cats"
-        );
-        if (!response.ok) {
-          console.error("Network response was not ok", response);
-          return [];
-        }
-        return response.json();
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-        return [];
-      }
-    },
+    queryFn: () => fetchData("https://clinics.soulnbody.net/pharmacy/public/api/cats"),
     staleTime: 1000 * 60 * 5,
   });
 };
@@ -155,19 +88,7 @@ export const useCategoriesProducts = (id) => {
     queryKey: ["categories-products", id],
     queryFn: async () => {
       if (!id) return null;
-      try {
-        const response = await fetch(
-          `https://clinics.soulnbody.net/pharmacy/public/api/cats/${id}/products`
-        );
-        if (!response.ok) {
-          console.error("Network response was not ok", response);
-          return null;
-        }
-        return response.json();
-      } catch (error) {
-        console.error("Error fetching category products:", error);
-        return null;
-      }
+      return await fetchData(`https://clinics.soulnbody.net/pharmacy/public/api/cats/${id}/products`);
     },
     enabled: !!id,
     staleTime: 1000 * 60 * 5,

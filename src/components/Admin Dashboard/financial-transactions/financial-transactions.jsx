@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useMemo } from "react";
-import { useFinancial } from "@/hooks/useAuth"; // تأكد من المسار الصحيح
+import { useFinancial } from "@/hooks/useAuth"; 
 import SearchBarTransc from "./components/searchbarTransc";
 import TranscTableHeader from "./components/Transc-table-header";
 import FinancialRow from "./components/Transc-table-row";
@@ -16,7 +16,6 @@ const FinancialTransactions = () => {
   const [expandedOrderId, setExpandedOrderId] = useState(null);
 
   const { data: orders = [], isLoading, isError } = useFinancial();
-
   const filteredOrders = useMemo(() => {
     return orders
       .filter((order) => {

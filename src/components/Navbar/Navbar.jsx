@@ -5,7 +5,6 @@ import { IoIosSearch } from "react-icons/io";
 import { IoCartOutline } from "react-icons/io5";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import styles from "./Navbar.module.css";
-import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { CiLogin } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +16,7 @@ import Search from "../Modals/Search";
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
-  const pathname = usePathname();
+  const [activeLink, setActiveLink] = useState(""); // حالة لتتبع الرابط النشط
   const dispatch = useDispatch();
   const { modalName } = useSelector((state) => state.modal);
 
@@ -31,6 +30,11 @@ const Navbar = () => {
 
   const handleNav = () => {
     setNav(!nav);
+  };
+
+  const handleLinkClick = (path) => {
+    setActiveLink(path); // تحديث الرابط النشط عند النقر
+    setNav(false); // إغلاق الشريط الجانبي بعد النقر
   };
 
   return (
@@ -48,7 +52,13 @@ const Navbar = () => {
         <ul dir="rtl" className="nav hidden md:flex items-center gap-8">
           {navItems.map((item, index) => (
             <li key={index} className={styles["nav-item"]}>
-              <Link href={item.path}>{item.text}</Link>
+              <Link
+                href={item.path}
+                className={activeLink === item.path ? "text-[#EE446E] font-semibold" : ""}
+                onClick={() => handleLinkClick(item.path)} // تحديث الرابط النشط عند النقر
+              >
+                {item.text}
+              </Link>
             </li>
           ))}
         </ul>
@@ -65,7 +75,6 @@ const Navbar = () => {
               onClick={() => dispatch(openModal("cart"))}
               className="cursor-pointer"
             />
-            {/* البادج بعدد العناصر */}
             <span className="absolute -top-2 -right-2 bg-[#EE446E] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
               {useSelector((state) =>
                 state.cart.cart.reduce((acc, item) => acc + item.quantity, 0)
@@ -109,12 +118,14 @@ const Navbar = () => {
             <li
               key={index}
               className={`px-4 py-2 rounded-xl cursor-pointer duration-300 mb-2
-                ${pathname === item.path
+                ${activeLink === item.path
                   ? "bg-[#EE446E] text-white font-semibold"
                   : "hover:bg-[#EE446E] hover:text-white"
                 }`}
             >
-              <Link href={item.path}>{item.text}</Link>
+              <Link href={item.path} onClick={() => handleLinkClick(item.path)}>
+                {item.text}
+              </Link>
             </li>
           ))}
         </ul>

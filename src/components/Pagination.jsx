@@ -11,12 +11,11 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage, totalItems, visib
   }, [currentPage, totalPages]);
 
   return (
-    <div className="flex justify-between items-center mt-4">
-      <div className="flex flex-row-reverse gap-2">
+    <div className="flex justify-between items-center mt-4 flex-col md:flex-row">
+      <div className="flex flex-row-reverse gap-2 ">
         <button
-          className={`px-3 py-1 rounded-md ${
-            currentPage === 1 ? "text-gray-400" : "text-gray-700"
-          }`}
+          className={`px-3 py-1 rounded-md ${currentPage === 1 ? "text-gray-400" : "text-gray-700"
+            }`}
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
         >
@@ -26,11 +25,10 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage, totalItems, visib
         {pagesToShow.map((page) => (
           <button
             key={page}
-            className={`px-3 py-1 rounded-md ${
-              currentPage === page
-                ? "bg-[#EE446E] text-white"
-                : "bg-[#F1F2F6] text-[#8B909A]"
-            }`}
+            className={`px-3 py-1 rounded-md ${currentPage === page
+              ? "bg-[#EE446E] text-white"
+              : "bg-[#F1F2F6] text-[#8B909A]"
+              }`}
             onClick={() => setCurrentPage(page)}
           >
             {page}
@@ -38,9 +36,8 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage, totalItems, visib
         ))}
 
         <button
-          className={`px-3 py-1 rounded-md ${
-            currentPage === totalPages ? "text-gray-400" : "text-gray-700"
-          }`}
+          className={`px-3 py-1 rounded-md ${currentPage === totalPages ? "text-gray-400" : "text-gray-700"
+            }`}
           onClick={() =>
             setCurrentPage((prev) => Math.min(prev + 1, totalPages))
           }
@@ -49,11 +46,12 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage, totalItems, visib
           <FaChevronRight />
         </button>
       </div>
-
-      <p className="text-gray-500">
+      <p className="text-gray-500 mt-2 sm:text-center block">
         عرض {visibleItems} من {totalItems}
       </p>
+
     </div>
+
   );
 };
 

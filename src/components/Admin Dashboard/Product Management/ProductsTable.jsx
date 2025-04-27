@@ -24,7 +24,6 @@ const ProductsTable = () => {
     fetch('https://clinics.soulnbody.net/pharmacy/public/api/all_products', {
       headers: {
         Authorization: 'Bearer 38|xCWVlQogvWa6RPolf2Bz1szXa1K1i6MXCQIAfsQf6e9e66f6',
-
       },
     })
       .then(res => res.json())
@@ -51,18 +50,18 @@ const ProductsTable = () => {
     <>
       {/* Header */}
       <div className="header flex flex-col md:flex-row justify-between md:items-center gap-4">
-        <div className="relative">
+        <div className="relative w-full md:w-auto">
           <input
             type="text"
             placeholder="بحث في جميع الأعمدة"
-            className="md:w-64 px-4 py-2 border border-[#DFE1E3] rounded-lg pl-10 text-gray-700 outline-none"
+            className="w-full md:w-64 px-4 py-2 border border-[#DFE1E3] rounded-lg pl-10 text-gray-700 outline-none"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
         </div>
 
-        <div className="btns-wrapper flex items-center gap-3">
+        <div className="btns-wrapper flex items-center gap-3 mt-4 md:mt-0">
           <Link href="/admin/product-management/add-new-product">
             <button className="btn bg-[#EE446E] text-white px-4 py-2 rounded-lg flex items-center gap-2">
               <GoPlus size={20} />
@@ -80,15 +79,15 @@ const ProductsTable = () => {
 
       {/* Tabs */}
       <div className="flex flex-col mt-8">
-        <div className="border border-[#D1D1D1] rounded-2xl p-2 flex items-center">
+        <div className="border border-[#D1D1D1] rounded-2xl p-2 flex flex-wrap items-center">
           {tabs.map((name, index) => (
             <button
               key={index}
               onClick={() => setActiveTab(name)}
-              className={`w-full font-bold ${activeTab === name
+              className={`w-full sm:w-auto font-bold ${activeTab === name
                 ? "bg-[#FFE7ED] text-[#EE446E]"
                 : "bg-white text-[#737373]"
-                } px-4 py-2 rounded-lg mr-2`}
+                } px-4 py-2 rounded-lg mr-2 mb-2 sm:mb-0`}
             >
               {name}
             </button>

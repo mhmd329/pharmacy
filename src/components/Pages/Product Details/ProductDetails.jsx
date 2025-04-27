@@ -6,7 +6,6 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import Products from "../Home/Products/Products";
 import ProductGallery from "./ProductGallery";
 import { openModal } from "@/store/slices/modal";
-import { useSelector } from "react-redux";  // استيراد useSelector للتحقق من التوكن
 import { getCookie } from "cookies-next";
 const ProductDetails = ({ product }) => {
   const dispatch = useDispatch();
@@ -52,8 +51,10 @@ const ProductDetails = ({ product }) => {
     <div className="min-h-screen pt-40">
       <div dir="rtl" className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          
+          {/* محتوى المنتج */}
           <div className="product-content flex flex-col gap-3 order-2 md:order-1">
-            <div className="header flex justify-between text-[22px] font-medium text-[#383838]">
+            <div className="header flex justify-between text-[20px] md:text-[22px] font-medium text-[#383838]">
               <h2>{productDetails?.name || "product name"}</h2>
               <h3>
                 {productDetails?.price_after_discount
@@ -61,31 +62,29 @@ const ProductDetails = ({ product }) => {
                   : "السعر غير متوفر"}
               </h3>
             </div>
-            <p className="text-[#697586]">
+            <p className="text-[#697586] text-[14px] md:text-[16px]">
               {productDetails?.description || "لا يوجد وصف للمنتج"}
             </p>
-            <p className="text-[#697586] text-[14px]">
+            <p className="text-[#697586] text-[14px] md:text-[16px]">
               {productDetails?.size
                 ? `الحجم: ${productDetails.size}`
                 : "الحجم غير متوفر"}
             </p>
             <p className="text-[#697586] text-[14px]">موصى به</p>
-
+  
             <button
-              onClick={handleAddToCart}  // استخدام الدالة هنا
-              className="cursor-pointer w-64 rounded-xl px-2.5 py-3 bg-[#EE446E] text-white hover:bg-[#d93961] transition-colors"
+              onClick={handleAddToCart} 
+              className="cursor-pointer w-full sm:w-64 rounded-xl px-2.5 py-3 bg-[#EE446E] text-white hover:bg-[#d93961] transition-colors"
             >
               اضف الى عربة التسوق
             </button>
-
+  
             {/* about product */}
             <div
-              className={`w-full flex flex-col gap-3 ${!isAboutProductOpen && "pb-3 border-b-1 border-[#dfe1e3]"
-                }`}
+              className={`w-full flex flex-col gap-3 ${!isAboutProductOpen && "pb-3 border-b-1 border-[#dfe1e3]"} `}
             >
               <p
-                className={`flex items-center justify-between cursor-pointer ${isAboutProductOpen && "bg-[#B0A6BD1A]"
-                  } py-2.5 ps-5 pe-1`}
+                className={`flex items-center justify-between cursor-pointer ${isAboutProductOpen && "bg-[#B0A6BD1A]"} py-2.5 ps-5 pe-1`}
                 onClick={() => setIsAboutProductOpen(!isAboutProductOpen)}
               >
                 ما هو {productDetails?.name}
@@ -105,45 +104,33 @@ const ProductDetails = ({ product }) => {
                 </div>
               )}
             </div>
-
+  
             {/* product ingredients */}
             <div
-              className={`w-full flex flex-col gap-3 ${!isProductIngrediendtsOpen &&
-                " pb-3 border-b-1 border-[#dfe1e3]"
-                }`}
+              className={`w-full flex flex-col gap-3 ${!isProductIngrediendtsOpen && "pb-3 border-b-1 border-[#dfe1e3]"}`}
             >
               <p
-                className={`flex items-center justify-between cursor-pointer ${isProductIngrediendtsOpen && "bg-[#B0A6BD1A]"
-                  } py-2.5 ps-5 pe-1`}
-                onClick={() =>
-                  setIsProductIngrediendtsOpen(!isProductIngrediendtsOpen)
-                }
+                className={`flex items-center justify-between cursor-pointer ${isProductIngrediendtsOpen && "bg-[#B0A6BD1A]"} py-2.5 ps-5 pe-1`}
+                onClick={() => setIsProductIngrediendtsOpen(!isProductIngrediendtsOpen)}
               >
                 المكونات
-                {isProductIngrediendtsOpen ? (
-                  <IoIosArrowUp />
-                ) : (
-                  <IoIosArrowDown />
-                )}
+                {isProductIngrediendtsOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
               </p>
               {isProductIngrediendtsOpen && (
                 <div className="text-[#697586] flex flex-col gap-3 pt-3">
                   <p>
-                    {productDetails?.ingredients ||
-                      "لا توجد معلومات عن المكونات"}
+                    {productDetails?.ingredients || "لا توجد معلومات عن المكونات"}
                   </p>
                 </div>
               )}
             </div>
-
+  
             {/* how to use */}
             <div
-              className={`w-full flex flex-col gap-3 ${!iHowToUseProductOpen && " pb-3 border-b-1 border-[#dfe1e3]"
-                }`}
+              className={`w-full flex flex-col gap-3 ${!iHowToUseProductOpen && "pb-3 border-b-1 border-[#dfe1e3]"}`}
             >
               <p
-                className={`flex items-center justify-between cursor-pointer ${iHowToUseProductOpen && "bg-[#B0A6BD1A]"
-                  } py-2.5 ps-5 pe-1`}
+                className={`flex items-center justify-between cursor-pointer ${iHowToUseProductOpen && "bg-[#B0A6BD1A]"} py-2.5 ps-5 pe-1`}
                 onClick={() => setIHowToUseProductOpen(!iHowToUseProductOpen)}
               >
                 طريقة الأستخدام
@@ -152,13 +139,14 @@ const ProductDetails = ({ product }) => {
               {iHowToUseProductOpen && (
                 <div className="text-[#697586] flex flex-col gap-3 pt-3">
                   <p>
-                    {productDetails?.usage ||
-                      "لا توجد معلومات عن طريقة الاستخدام"}
+                    {productDetails?.usage || "لا توجد معلومات عن طريقة الاستخدام"}
                   </p>
                 </div>
               )}
             </div>
           </div>
+  
+          {/* معرض الصور */}
           <div className="img-slider order-1 md:order-2">
             <ProductGallery
               mainImage={mainImage}
@@ -166,6 +154,8 @@ const ProductDetails = ({ product }) => {
             />
           </div>
         </div>
+  
+        {/* المنتجات ذات الصلة */}
         <Products
           title="منتجات تمت مشاهدتها حديثا"
           relatedProducts={product?.related_products || []}
@@ -173,6 +163,6 @@ const ProductDetails = ({ product }) => {
       </div>
     </div>
   );
-};
+}
 
 export default ProductDetails;

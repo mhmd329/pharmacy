@@ -1,61 +1,45 @@
 'use client'
+
 import { closeModal } from "@/store/slices/modal";
 import { IoClose } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 import { useRegisterUser } from "@/hooks/useAuth";
-import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const SignUp = () => {
     const dispatch = useDispatch();
     const { mutate: registerUser, isLoading } = useRegisterUser();
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        password: "",
-        repassword: ""
-    });
-    const [errors, setErrors] = useState({});
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-        // مسح رسالة الخطأ عند تعديل الحقل
-        if (errors[name]) {
-            setErrors(prev => ({ ...prev, [name]: '' }));
-        }
-    };
-
-    const validateForm = () => {
-        const newErrors = {};
-        
-        if (!formData.name) newErrors.name = "الاسم مطلوب";
-        if (!formData.email) newErrors.email = "البريد الإلكتروني مطلوب";
-        else if (!/^\S+@\S+\.\S+$/.test(formData.email)) newErrors.email = "بريد إلكتروني غير صالح";
-        if (!formData.password) newErrors.password = "كلمة المرور مطلوبة";
-        else if (formData.password.length < 6) newErrors.password = "يجب أن تكون كلمة المرور 6 أحرف على الأقل";
-        if (formData.password !== formData.repassword) newErrors.repassword = "كلمات المرور غير متطابقة";
-        
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        
-        if (!validateForm()) return;
-
-        try {
-            await registerUser({
-                name: formData.name,
-                email: formData.email,
-                password: formData.password,
-                password_confirmation: formData.repassword
+    const formik = useFormik({
+        initialValues: {
+            name: "",
+            email: "",
+            password: "",
+            repassword: ""
+        },
+        validationSchema: Yup.object({
+            name: Yup.string()
+                .required("الاسم مطلوب"),
+            email: Yup.string()
+                .email("البريد الإلكتروني غير صالح")
+                .required("البريد الإلكتروني مطلوب"),
+            password: Yup.string()
+                .min(6, "كلمة المرور يجب أن تكون 6 أحرف على الأقل")
+                .required("كلمة المرور مطلوبة"),
+            repassword: Yup.string()
+                .oneOf([Yup.ref('password')], "كلمات المرور غير متطابقة")
+                .required("تأكيد كلمة المرور مطلوب"),
+        }),
+        onSubmit: (values) => {
+            registerUser({
+                name: values.name,
+                email: values.email,
+                password: values.password,
+                password_confirmation: values.repassword,
             }, {
-                onSuccess: (data) => {
+                onSuccess: () => {
                     toast.success("تم التسجيل بنجاح!");
                     dispatch(closeModal());
                 },
@@ -63,11 +47,8 @@ const SignUp = () => {
                     toast.error(error.message || "حدث خطأ أثناء التسجيل");
                 }
             });
-        } catch (error) {
-            console.error("Registration error:", error);
-            toast.error("حدث خطأ غير متوقع");
-        }
-    };
+        },
+    });
 
     return (
         <div dir="rtl" className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
@@ -81,87 +62,83 @@ const SignUp = () => {
 
                 <div className="flex flex-col gap-5 w-full md:w-[70%] mx-auto">
                     <h2 className="text-center text-2xl font-bold text-[#333]">إنشاء حساب</h2>
-                    
-                    <form onSubmit={handleSubmit} dir="rtl" noValidate>
+
+                    <form onSubmit={formik.handleSubmit} dir="rtl" noValidate>
                         <div className="flex flex-col gap-5">
-                            {/* Name Field */}
+                            {/* Name */}
                             <div>
                                 <input
                                     type="text"
                                     name="name"
                                     placeholder="الاسم"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    className={`w-full bg-white outline-none border ${
-                                        errors.name ? 'border-red-500' : 'border-[#BFB9CF]'
-                                    } p-2.5 rounded-lg`}
+                                    value={formik.values.name}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    className={`w-full bg-white outline-none border ${formik.touched.name && formik.errors.name ? 'border-red-500' : 'border-[#BFB9CF]'} p-2.5 rounded-lg`}
                                 />
-                                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                                {formik.touched.name && formik.errors.name && (
+                                    <p className="text-red-500 text-sm mt-1">{formik.errors.name}</p>
+                                )}
                             </div>
-                            
-                            {/* Email Field */}
+
+                            {/* Email */}
                             <div>
                                 <input
                                     type="email"
                                     name="email"
                                     placeholder="البريد الإلكتروني"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    className={`w-full bg-white outline-none border ${
-                                        errors.email ? 'border-red-500' : 'border-[#BFB9CF]'
-                                    } p-2.5 rounded-lg`}
+                                    value={formik.values.email}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    className={`w-full bg-white outline-none border ${formik.touched.email && formik.errors.email ? 'border-red-500' : 'border-[#BFB9CF]'} p-2.5 rounded-lg`}
                                 />
-                                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                                {formik.touched.email && formik.errors.email && (
+                                    <p className="text-red-500 text-sm mt-1">{formik.errors.email}</p>
+                                )}
                             </div>
-                            
-                            {/* Password Field */}
+
+                            {/* Password */}
                             <div>
                                 <input
                                     type="password"
                                     name="password"
                                     placeholder="كلمة المرور"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    className={`w-full bg-white outline-none border ${
-                                        errors.password ? 'border-red-500' : 'border-[#BFB9CF]'
-                                    } p-2.5 rounded-lg`}
+                                    value={formik.values.password}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    className={`w-full bg-white outline-none border ${formik.touched.password && formik.errors.password ? 'border-red-500' : 'border-[#BFB9CF]'} p-2.5 rounded-lg`}
                                 />
-                                {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+                                {formik.touched.password && formik.errors.password && (
+                                    <p className="text-red-500 text-sm mt-1">{formik.errors.password}</p>
+                                )}
                             </div>
-                            
-                            {/* Confirm Password Field */}
+
+                            {/* Confirm Password */}
                             <div>
                                 <input
                                     type="password"
                                     name="repassword"
                                     placeholder="تأكيد كلمة المرور"
-                                    value={formData.repassword}
-                                    onChange={handleChange}
-                                    className={`w-full bg-white outline-none border ${
-                                        errors.repassword ? 'border-red-500' : 'border-[#BFB9CF]'
-                                    } p-2.5 rounded-lg`}
+                                    value={formik.values.repassword}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    className={`w-full bg-white outline-none border ${formik.touched.repassword && formik.errors.repassword ? 'border-red-500' : 'border-[#BFB9CF]'} p-2.5 rounded-lg`}
                                 />
-                                {errors.repassword && <p className="text-red-500 text-sm mt-1">{errors.repassword}</p>}
+                                {formik.touched.repassword && formik.errors.repassword && (
+                                    <p className="text-red-500 text-sm mt-1">{formik.errors.repassword}</p>
+                                )}
                             </div>
-                            
+
+                            {/* Submit Button */}
                             <button
                                 type="submit"
+                                className={`rounded-xl px-2.5 py-3 bg-[#EE446E] text-white cursor-pointer hover:bg-[#d13d63] transition-colors ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
                                 disabled={isLoading}
-                                className={`rounded-xl px-2.5 py-3 bg-[#EE446E] text-white ${
-                                    isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-[#d13d63]'
-                                } transition-colors`}
                             >
-                                {isLoading ? 'جاري التسجيل...' : 'إنشاء حساب'}
+                                {isLoading ? "جاري إنشاء الحساب..." : "إنشاء حساب"}
                             </button>
                         </div>
                     </form>
-                    
-                    {/* Divider */}
-                    <div className="flex items-center justify-between">
-                        <div className="flex-1 border-t border-[#B0A6BD]"></div>
-                        <span className="px-4 text-[#B0A6BD]">أو</span>
-                        <div className="flex-1 border-t border-[#B0A6BD]"></div>
-                    </div>
                 </div>
             </div>
         </div>

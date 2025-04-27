@@ -374,10 +374,10 @@ const AddNewProduct = () => {
       <p className="text-red-500 text-sm mb-4">{errors.images}</p>
     )}
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <ImageUploadField index={0} label="الصورة الرئيسية" />
-      <ImageUploadField index={1} label="صورة إضافية 1" />
-      <ImageUploadField index={2} label="صورة إضافية 2" />
-      <ImageUploadField index={3} label="صورة إضافية 3" />
+      <ImageUploadField index={0} label="صورة رئيسية 1" />
+      <ImageUploadField index={1} label="صورة إضافية 2" />
+      <ImageUploadField index={2} label="صورة إضافية 3" />
+      <ImageUploadField index={3} label="صورة إضافية 4" />
     </div>
   </div>
 

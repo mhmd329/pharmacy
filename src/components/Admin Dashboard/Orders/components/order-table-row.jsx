@@ -7,7 +7,7 @@ const OrderRow = ({ order, expandedOrderId, onToggleDetails, onStatusChange, sta
   const isExpanded = expandedOrderId === order.shopping_id;
 
   const toggleDropdown = (e) => {
-    e.stopPropagation(); // عشان ما يفتحش تفاصيل الأوردر لما تضغط
+    e.stopPropagation(); // لمنع الفتح عند التفاعل مع الـ dropdown
     setIsDropdownOpen((prev) => !prev);
   };
 
@@ -42,7 +42,7 @@ const OrderRow = ({ order, expandedOrderId, onToggleDetails, onStatusChange, sta
         </div>
 
         {isDropdownOpen && (
-          <div className="absolute mt-1 w-40 bg-white rounded-lg shadow-lg border z-10">
+          <div className="absolute mt-1 w-40 bg-white rounded-lg shadow-lg border z-20 max-h-60 overflow-y-auto">
             {statusOptions.map((status) => (
               <div
                 key={status}

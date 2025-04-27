@@ -11,6 +11,8 @@ const AddAdvertisement = () => {
     product_id: "",
     discount: "",
   });
+  const [successMessage, setSuccessMessage] = useState(""); // رسالة النجاح
+  const [errorMessage, setErrorMessage] = useState(""); // رسالة الخطأ
 
   const { mutateAsync } = useCreateOffer();
 
@@ -34,26 +36,37 @@ const AddAdvertisement = () => {
       [name]: value,
     }));
   };
+
+  const validateForm = () => {
+    // تحقق من أن جميع الحقول مملوءة
+    return formData.name && formData.description && formData.product_id && formData.discount && imageFile;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
+    if (!validateForm()) {
+      setErrorMessage("يرجى ملء جميع الحقول!");
+      return;
+    }
+
     const form = new FormData();
     form.append("name", formData.name);
     form.append("description", formData.description);
     form.append("product_id", formData.product_id);
     form.append("discount", formData.discount);
     form.append("image", imageFile);
- 
+
     try {
-      await mutateAsync({  formData: form });
-      alert("تم رفع العرض بنجاح");
+      await mutateAsync({ formData: form });
+      setSuccessMessage("تم رفع العرض بنجاح!");
+      setErrorMessage(""); // إعادة تعيين رسالة الخطأ إذا كانت هناك
     } catch (error) {
       console.error("Error submitting ad:", error.message || error);
-      alert("حدث خطأ أثناء رفع العرض: " + (error.message || "غير معروف"));
+      setSuccessMessage("");
+      setErrorMessage("حدث خطأ أثناء رفع العرض: " + (error.message || "غير معروف"));
     }
   };
-  
-
 
   return (
     <div className="flex flex-col items-center p-6 border border-gray-300 rounded-lg w-full bg-white shadow-md">
@@ -63,8 +76,8 @@ const AddAdvertisement = () => {
       <div
         {...getRootProps()}
         className={`flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-lg p-6 cursor-pointer transition-all duration-200 ease-in-out ${isDragActive
-            ? "border-red-500 bg-red-100"
-            : "border-gray-300 bg-red-50"
+          ? "border-red-500 bg-red-100"
+          : "border-gray-300 bg-red-50"
           }`}
       >
         <input {...getInputProps()} />
@@ -83,8 +96,8 @@ const AddAdvertisement = () => {
       </div>
 
       {/* حقول الإدخال */}
-      <div className="w-full flex gap-6 mt-6">
-        <div className="flex flex-col">
+      <div className="w-full flex flex-col sm:flex-row gap-6 mt-6">
+        <div className="flex flex-col w-full sm:w-1/4">
           <label className="text-right mb-2 font-medium">اسم العرض</label>
           <input
             type="text"
@@ -96,7 +109,7 @@ const AddAdvertisement = () => {
           />
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full sm:w-1/4">
           <label className="text-right mb-2 font-medium">الوصف</label>
           <input
             name="description"
@@ -107,7 +120,7 @@ const AddAdvertisement = () => {
           />
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full sm:w-1/4">
           <label className="text-right mb-2 font-medium">المنتج (Product ID)</label>
           <input
             type="text"
@@ -119,7 +132,7 @@ const AddAdvertisement = () => {
           />
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full sm:w-1/4">
           <label className="text-right mb-2 font-medium">الخصم (%)</label>
           <input
             type="number"
@@ -131,15 +144,35 @@ const AddAdvertisement = () => {
           />
         </div>
       </div>
-      <div className="flex ml-auto">
+
+      {/* رسالة النجاح أو الخطأ */}
+      {successMessage && (
+        <div
+          className={`mt-4 text-center py-2 px-4 rounded-lg ${successMessage.includes("خطأ")
+              ? "bg-red-100 text-red-600"
+              : "bg-green-100 text-green-600"
+            }`}
+        >
+          {successMessage}
+        </div>
+      )}
+      {errorMessage && (
+        <div
+          className="mt-4 text-center py-2 px-4 rounded-lg bg-red-100 text-red-600"
+        >
+          {errorMessage}
+        </div>
+      )}
+
+      {/* زر رفع العرض */}
+      <div className="flex ml-auto w-full sm:w-auto">
         <button
           onClick={handleSubmit}
-          className="mt-6 bg-[#EE446E] text-white px-6 py-3 rounded-lg hover:bg-[#d13558] transition duration-200 ease-in-out"
+          className="mt-6 bg-[#EE446E] text-white px-6 py-3 rounded-lg hover:bg-[#d13558] transition duration-200 ease-in-out w-full sm:w-auto"
         >
           رفع العرض
         </button>
       </div>
-
     </div>
   );
 };
