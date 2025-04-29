@@ -177,4 +177,4 @@ const AddAdvertisement = () => {
   );
 };
 
-export default AddAdvertisement;
+export default AddAdvertisement

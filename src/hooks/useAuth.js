@@ -3,9 +3,9 @@ import { getCookie, setCookie, deleteCookie } from 'cookies-next';
 
 const baseUrl = "https://clinics.soulnbody.net/pharmacy/public/api";
 
-const getAuthHeader = () => {
-  const token = getCookie('token');
-  return { Authorization: `Bearer ${token}` };
+export const getAuthHeader = () => {
+  const tokenAdmen = getCookie('tokenAdmen');
+  return { Authorization: `Bearer ${tokenAdmen}` };
 };
 
 const fetcher = async (endpoint, { method = "GET", headers = {}, body } = {}) => {
@@ -16,12 +16,12 @@ const fetcher = async (endpoint, { method = "GET", headers = {}, body } = {}) =>
   });
 
   const data = await response.json();
-
   if (!response.ok) {
     const errorMessage = data.message || "Unknown error";
     console.error(`Error in ${endpoint}:`, errorMessage);
-    throw new Error(errorMessage);
+    throw new Error(errorMessage); 
   }
+  
 
   return data;
 };
@@ -37,7 +37,7 @@ export const useLoginAdmin = () => {
       });
 
       if (data.token) {
-        setCookie('token', data.token, {
+        setCookie('tokenAdmen', data.token, {
           maxAge: 60 * 60 * 24 * 7,
           path: '/',
           secure: process.env.NODE_ENV === 'production',
@@ -50,28 +50,6 @@ export const useLoginAdmin = () => {
   });
 };
 
-export const useLoginUser = () => {
-  return useMutation({
-    mutationFn: async (formData) => {
-      const data = await fetcher('login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (data.token) {
-        setCookie('token', data.token, {
-          maxAge: 60 * 60 * 24 * 7,
-          path: '/',
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax'
-        });
-      }
-
-      return data;
-    }
-  });
-};
 
 export const useLogout = () => {
   return useMutation({
@@ -100,18 +78,36 @@ export const useCreateProduct = () => {
   });
 };
 
+export const useCreateOffer = () => {
+  return useMutation({
+    mutationFn: async (formData) => {
+      return fetcher('offers', {
+        method: "POST",
+        headers: { ...getAuthHeader() },
+        body: formData,
+      });
+    },
+  });
+};
 export const useUpdatePro = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({ formData, productId }) => {
       return fetcher(`products/${productId}/update`, {
         method: "POST",
         headers: {
-           ...getAuthHeader(),
-          // Authorization : "Bearer 43|cIUAxxu3E0K44sn2WhR4SiWEZonJEmrJLBaEeWqJbd4442ef",
-         "Content-Type": "application/json",
+          ...getAuthHeader(),
         },
-        body: JSON.stringify(formData), // تحويل formData إلى JSON
+        body: formData, // أرسل formData مباشرة هنا بدون JSON.stringify
       });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['products']);
+    },
+    onError: (error) => {
+      console.error("Error updating product:", error);
+      alert("حدث خطأ أثناء تحديث المنتج. يرجى المحاولة مرة أخرى.");
     },
   });
 };
@@ -197,6 +193,19 @@ export const useCustomers = () => {
   });
 };
 
+export const usePendingOrders = () => {
+  return useQuery({
+    queryKey: ["userOrders"],
+    queryFn: async () => {
+      return fetcher('userOrders', {
+        headers: getAuthHeader(),
+      });
+    },
+    staleTime: 1000 * 60 * 5,
+    keepPreviousData: true,
+  });
+};
+
 export const useOrdersData = () => {
   return useQuery({
     queryKey: ["orders_data"],
@@ -204,7 +213,7 @@ export const useOrdersData = () => {
       const data = await fetcher('orders_data', {
         headers: getAuthHeader(),
       });
-      return data.shopping_data || [];
+      return data.orders || [];
     },
     staleTime: 1000 * 60 * 5,
     keepPreviousData: true,
@@ -229,6 +238,19 @@ export const useDashboardStats = () => {
     queryKey: ["stats"],
     queryFn: async () => {
       return fetcher('admin/getDashboardStats', {
+        headers: getAuthHeader(),
+      });
+    },
+    staleTime: 1000 * 60 * 5,
+    keepPreviousData: true,
+  });
+};
+
+export const useMostSold = () => {
+  return useQuery({
+    queryKey: ["products/most-sold"],
+    queryFn: async () => {
+      return fetcher('products/most-sold', {
         headers: getAuthHeader(),
       });
     },

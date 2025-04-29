@@ -3,10 +3,14 @@ import { openSidebar } from "@/store/slices/sidebarSlice";
 import Image from "next/image";
 import { FaBars } from "react-icons/fa";
 import { MdOutlineNotificationsNone } from "react-icons/md";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"; // Added useSelector
+import { openModal } from "@/store/slices/modal";
+import Notifications from './Notifications'
 
 const AdminNavbar = () => {
   const dispatch = useDispatch();
+  const modalName = useSelector((state) => state.modal.modalName); // Access modalName from Redux
+
   return (
     <div className="stickey top-0 left-0 w-full z-30 bg-white shadow py-4 border-b-1 border-[#E7E7E7]">
       <div className="container mx-auto px-5">
@@ -43,12 +47,18 @@ const AdminNavbar = () => {
                 <p className="font-normal text-[12px] text-[#727272]">ادمن</p>
               </div>
             </div>
-            <div className="notification-wrapper p-1 w-[26px] h-[26px] md:w-[36px] md:h-[36px] bg-[#F6F6F6] flex justify-center items-center rounded-md">
+            <div
+              className="notification-wrapper p-1 w-[26px] h-[26px] md:w-[36px] md:h-[36px] bg-[#F6F6F6] flex justify-center items-center cursor-pointer rounded-md"
+              onClick={() => dispatch(openModal("Notifications"))}
+            >
               <MdOutlineNotificationsNone size={30} />
             </div>
           </div>
         </div>
       </div>
+
+      {/* Conditionally render Notifications modal */}
+      {modalName === "Notifications" && <Notifications />}
     </div>
   );
 };

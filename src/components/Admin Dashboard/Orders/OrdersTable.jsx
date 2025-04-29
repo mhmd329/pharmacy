@@ -19,7 +19,8 @@ const OrdersTable = () => {
   const { mutate: updateStatus } = useUpdateStatus();
   const [sortOrder, setSortOrder] = useState("تصفية بالتاريخ");
 
-  const { data: orders = [], isLoading, isError } = useOrdersData();
+  const { data, isLoading, isError } = useOrdersData();
+  const orders = data || [];
 
   const filteredOrders = useMemo(() => {
     return orders
@@ -28,7 +29,6 @@ const OrdersTable = () => {
         if (activeTab === "يتم المعالجة") return order.status === "processing";
         if (activeTab === "تم الشحن") return order.status === "shipped";
         if (activeTab === "تم التوصيل") return order.status === "delivered";
-        // if (activeTab === "مؤكدة") return order.status === "confirmed";
         if (activeTab === "ملغي") return order.status === "cancelled";
         return true;
       })
@@ -53,7 +53,6 @@ const OrdersTable = () => {
     "processing",
     "shipped",
     "delivered",
-    // "confirmed",
     "cancelled",
   ];
 
@@ -107,12 +106,13 @@ const OrdersTable = () => {
       </div>
 
       <div className="overflow-x-auto mt-6">
-        <table className="w-full min-w-[850px] border-collapse rounded-lg overflow-hidden">
+        <table className="w-full min-w-[850px] border-collapse rounded-lg ">
           <OrderTableHeader />
           <tbody>
             {paginatedOrders.length > 0 ? (
               paginatedOrders.map((order) => (
-                <React.Fragment key={order.shopping_id}>
+                <React.Fragment key={order.order_id}>
+                  
                   <OrderRow
                     order={order}
                     expandedOrderId={expandedOrderId}
@@ -120,8 +120,8 @@ const OrdersTable = () => {
                     onStatusChange={handleStatusChange}
                     statusOptions={allStatusOptions}
                   />
-                  {expandedOrderId === order.shopping_id && (
-                    <OrderDetailsRow order={order} />
+                  {expandedOrderId === order.order_id && (
+                    <OrderDetailsRow order={order} discount={order.discount_code}/>
                   )}
                 </React.Fragment>
               ))

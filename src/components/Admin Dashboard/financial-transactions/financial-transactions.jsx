@@ -6,6 +6,7 @@ import TranscTableHeader from "./components/Transc-table-header";
 import FinancialRow from "./components/Transc-table-row";
 import OrderDetailsRow from "./components/Transc-details-row";
 import PaginationTransc from "./components/paginationTransc";
+import MoneyStatusTabs from "../Orders/components/tabs";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -41,7 +42,12 @@ const FinancialTransactions = () => {
   }, [filteredOrders, currentPage]);
 
 
-
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setCurrentPage(1);
+    setExpandedOrderId(null);
+  };
+  
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
     setCurrentPage(1);
@@ -57,6 +63,7 @@ const FinancialTransactions = () => {
 
   return (
     <div className="bg-white md:p-6 rounded-xl border-b border-[#DFE1E3]">
+           <MoneyStatusTabs activeTab={activeTab} onTabChange={handleTabChange} />
       <div className="flex justify-between items-center">
 
 

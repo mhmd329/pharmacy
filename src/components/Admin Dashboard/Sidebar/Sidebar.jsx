@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useFinancial } from "@/hooks/useAuth";
 import { useOrdersData } from "@/hooks/useAuth";
 import { useCustomers } from "@/hooks/useAuth";
-
+import { DotLoader } from "react-spinners"; // استيراد الـ DotLoader
 const Sidebar = () => {
   const dispatch = useDispatch();
   const { isSidebarOpen } = useSelector((state) => state.sidebar);
@@ -32,16 +32,28 @@ const Sidebar = () => {
 
   // حالة لتخزين الرابط النشط
   const [activeLink, setActiveLink] = useState(pathname);
-
+  const [isLoading, setIsLoading] = useState(false); 
   const handleLinkClick = (link) => {
-    // تغيير الرابط النشط
-    setActiveLink(link);
+
+    setIsLoading(true)
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000);
+        setActiveLink(link);
     // إغلاق الشريط الجانبي
     dispatch(closeSidebar());
   };
 
+  
+  
   return (
     <>
+     {/* عرض الـ loading أثناء التوجيه */}
+     {isLoading && (
+        <div className="fixed top-0 left-0 w-full h-full bg-opacity-50 bg-gray-900 flex items-center justify-center z-50">
+          <DotLoader size={50} color="#EE446E" />
+        </div>
+      )}
       <div
         onClick={() => dispatch(closeSidebar())}
         className={`cursor-pointer md:hidden fixed top-0 left-0 w-screen h-screen z-40 bg-black/50 ${isSidebarOpen ? "block" : "hidden"

@@ -3,8 +3,10 @@ import { useState } from "react";
 import { LuMoveRight } from "react-icons/lu";
 import { useSelector, useDispatch } from "react-redux";
 import { useCreateOrder } from "@/hooks/useAuth";
-import { clearCart } from "@/store/slices/Caart";  
-import { useRouter } from "next/navigation"; 
+import { clearCart } from "@/store/slices/Caart";
+import { useRouter } from "next/navigation";
+import { DotLoader } from "react-spinners";
+
 import Image from "next/image";
 
 const CheckoutPage = () => {
@@ -18,7 +20,7 @@ const CheckoutPage = () => {
         shippingMethod: '',
     });
     const [notification, setNotification] = useState({ message: '', type: '' });
-    
+
     const cartItems = useSelector(state => state.cart.cart);
     const dispatch = useDispatch();
     const router = useRouter();
@@ -41,12 +43,29 @@ const CheckoutPage = () => {
         });
     };
 
-    const { mutate: createOrder, isLoading, isSuccess, error } = useCreateOrder();
-
+    const { mutate: createOrder, isSuccess, error } = useCreateOrder();
+    const [isLoading, setIsLoading] = useState(false)
     const handleSubmitOrder = () => {
+        // التحقق من أن جميع الحقول المطلوبة تم ملؤها
+        const requiredFields = ['fName', 'lName', 'country', 'address', 'phone', 'shippingMethod'];
+        for (let field of requiredFields) {
+            if (!formData[field]) {
+                setNotification({
+                    message: "يرجى ملء جميع الحقول المطلوبة",
+                    type: "error"
+                });
+                return; // إيقاف العملية إذا كانت الحقول غير مكتملة
+            }
+        }
+
+        // تعيين حالة التحميل عند البدء
+        setIsLoading(true);
+
+        // الحصول على بيانات المنتجات
         const product_ids = cartItems.map(item => item.id);
         const qty = cartItems.map(item => item.quantity);
 
+        // تجهيز بيانات الطلب
         const orderPayload = {
             product_ids,
             qty,
@@ -59,37 +78,42 @@ const CheckoutPage = () => {
             payment_method: "cash"
         };
 
+        // إرسال الطلب إلى الـ API
         createOrder(orderPayload, {
             onSuccess: (data) => {
                 setNotification({ message: "تم إنشاء الطلب بنجاح ✅", type: "success" });
-                console.log(data);
-                
-                // بعد نجاح الطلب:
-                dispatch(clearCart());  // لتفريغ عربة التسوق
+                dispatch(clearCart());  // مسح السلة بعد إتمام الطلب
                 setTimeout(() => {
-                    setNotification({ message: '', type: '' });
-                    router.push('/');  // التوجه إلى الصفحة الرئيسية بعد 3 ثواني
-                }, 0.3); // Hide after 3 seconds
+                    setIsLoading(false); // إعادة حالة التحميل إلى false بعد إتمام العملية
+                    setNotification({ message: '', type: '' });  // إخفاء إشعار النجاح
+                    router.push('/');  // العودة إلى الصفحة الرئيسية
+                }, 2000);
             },
             onError: (err) => {
                 setNotification({ message: "حدث خطأ أثناء إنشاء الطلب ❌", type: "error" });
                 console.error(err);
-                setTimeout(() => setNotification({ message: '', type: '' }), 3000); // Hide after 3 seconds
-            },
+                setIsLoading(false); // إعادة حالة التحميل إلى false في حالة حدوث خطأ
+            }
         });
     };
 
+
+
     return (
         <div className="pt-40">
-             {/* Notification Toast */}
-             {notification.message && (
-                <div className={`fixed top-20 right-5 z-50 p-4 rounded-md shadow-lg text-white transition-all duration-300 ${
-                    notification.type === "success" ? "bg-green-500" : "bg-red-500"
-                }`}>
+            {isLoading && (
+                <div className="flex justify-center items-center w-full h-screen fixed inset-0 bg-black/80 z-50">
+                    <DotLoader color="#EE446E" />
+                </div>
+            )}
+            {/* Notification Toast */}
+            {notification.message && (
+                <div className={`fixed top-20 right-5 z-50 p-4 rounded-md shadow-lg text-white transition-all duration-300 ${notification.type === "success" ? "bg-green-500" : "bg-red-500"
+                    }`}>
                     {notification.message}
                 </div>
             )}
-           <div className="container mx-auto">
+            <div className="container mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
                     {!isContinueClicked ?
                         <div className="lg:col-span-2 bg-[#f8f8f8b3] p-8 rounded-2xl">
@@ -102,6 +126,7 @@ const CheckoutPage = () => {
                                         <input
                                             type="radio"
                                             name="shippingMethod"
+                                            required
                                             id="homeDelivery"
                                             checked={formData.shippingMethod === "homeDelivery"}
                                             onChange={handleRadioChange}
@@ -110,6 +135,7 @@ const CheckoutPage = () => {
                                     <div className="input-wrapper flex items-center gap-2.5">
                                         <label htmlFor="reserveProduct">حجز المنتج</label>
                                         <input
+                                            required
                                             type="radio"
                                             name="shippingMethod"
                                             id="reserveProduct"
@@ -123,6 +149,7 @@ const CheckoutPage = () => {
                                 <h3 className="text-[20px] text-[#383838] font-medium">تفاصيل التوصيل</h3>
                                 <div className="grid grid-cols-2 gap-5">
                                     <input
+                                        required
                                         type="text"
                                         name="fName"
                                         placeholder="الأسم الاول"
@@ -131,6 +158,7 @@ const CheckoutPage = () => {
                                         className="!bg-white outline-none border border-[#BFB9CF] focus:border-[#EE446E] p-2.5 rounded-lg"
                                     />
                                     <input
+                                        required
                                         type="text"
                                         name="lName"
                                         placeholder="الأسم الأخير"
@@ -139,6 +167,7 @@ const CheckoutPage = () => {
                                         className="!bg-white outline-none border border-[#BFB9CF] focus:border-[#EE446E] p-2.5 rounded-lg"
                                     />
                                     <input
+                                        required
                                         type="text"
                                         name="country"
                                         placeholder="البلد"
@@ -147,6 +176,7 @@ const CheckoutPage = () => {
                                         className="col-span-2 !bg-white outline-none border border-[#BFB9CF] focus:border-[#EE446E] p-2.5 rounded-lg"
                                     />
                                     <input
+                                        required
                                         type="text"
                                         name="address"
                                         placeholder="العنوان"
@@ -155,6 +185,7 @@ const CheckoutPage = () => {
                                         className="col-span-2 !bg-white outline-none border border-[#BFB9CF] focus:border-[#EE446E] p-2.5 rounded-lg"
                                     />
                                     <input
+                                        required
                                         type="tel"
                                         name="phone"
                                         placeholder="رقم الهاتف"
@@ -221,7 +252,14 @@ const CheckoutPage = () => {
                             </div>
 
                             <div className="grid grid-cols-4 gap-5 mt-10">
-                                <button onClick={handleSubmitOrder} className="col-span-2 rounded-md py-2 bg-[#EE446E] hover:bg-[#d93961] text-white font-bold cursor-pointer"> تاكيد الاوردر</button>
+                                <button
+                                    onClick={handleSubmitOrder}
+                                    disabled={isLoading}
+                                    className={`col-span-2 rounded-md py-2 font-bold text-white cursor-pointer
+                      ${isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#EE446E] hover:bg-[#d93961]'}`}
+                                >
+                                    تأكيد الأوردر
+                                </button>
                                 <p className="cursor-pointer flex items-center gap-2.5 text-[#B0A6BD] hover:text-[#d93961]" onClick={() => setIsContinueClicked(false)}>
                                     العودة الى بياانات الشحن
                                     <LuMoveRight />

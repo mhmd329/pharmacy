@@ -1,15 +1,15 @@
 import { IoPrintSharp } from "react-icons/io5";
 
-const OrderDetailsRow = ({ order }) => {
-  const details = order.order_details || [];
+const OrderDetailsRow = ({ order ,discount}) => {
+  const details = order.order_items || [];
 
   const mappedDetails = details.map((item) => ({
-    id: item.shopping_id,
+    id: item.product_id,
     name: item.product_name,
     price: item.product_price,
-    quantity: 1,
-    discount: item.discount,
-    total: item.total_price,
+    quantity: item.qty,
+    discount: discount,
+    total: item.total,
   }));
 
   return (
@@ -67,10 +67,10 @@ const OrderDetailsRow = ({ order }) => {
                 </li>
                 <li className="flex gap-5">
                   <span>الخصم:</span>{" "}
-                  <span className="text-[#EA5455]">{order.discount}</span>
+                  <span className="text-[#EA5455]">{order.discount_code}</span>
                 </li>
                 <li className="flex gap-5">
-                  <span>الإجمالي:</span> <span>{order.total}</span>
+                  <span>الإجمالي:</span> <span>{order.total_price}</span>
                 </li>
               </ul>
             </div>

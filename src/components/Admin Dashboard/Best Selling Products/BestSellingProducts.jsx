@@ -1,33 +1,14 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FiArrowLeft } from "react-icons/fi";
+import { useMostSold } from '@/hooks/useAuth';
 
 const BestSellingProducts = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true); // optional: للتحميل
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("https://clinics.soulnbody.net/pharmacy/public/api/most-sold");
-        const data = await response.json();
-        // تأكد من شكل البيانات القادمة
-        setProducts(data?.data || []); // حسب شكل الـ API response
-      } catch (err) {
-        console.error("Error fetching products:", err);
-        setError("فشل في تحميل المنتجات.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
+  const { data, isLoading, isError } = useMostSold();
+  const products = data?.data || [];
+  
   return (
     <div className="bg-white p-6 rounded-xl border border-[#DFE1E3]">
       {/* Header */}
@@ -39,10 +20,10 @@ const BestSellingProducts = () => {
       </div>
 
       {/* الحالة أثناء التحميل */}
-      {loading ? (
+      {isLoading ? (
         <p className="text-center">جاري تحميل المنتجات...</p>
-      ) : error ? (
-        <p className="text-center text-red-500">{error}</p>
+      ) : isError ? (
+        <p className="text-center text-red-500">حدث خطأ أثناء جلب البيانات</p>
       ) : (
         <div className="overflow-x-auto max-w-full">
           <table className="min-w-[600px] w-full border-collapse rounded-lg overflow-hidden">
@@ -55,12 +36,12 @@ const BestSellingProducts = () => {
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
+            {products.map((product) => (
                 <tr key={product.id} className="border-b border-[#DFE1E3] last:border-0">
                   <td className="p-3 flex items-center gap-3">
                     <Image
-src={product.image ? `/${product.image}` : "/imgs/admin/best-selling-product.png"}
-alt={product.name}
+                      src={product.image ? `/${product.image}` : "/imgs/admin/best-selling-product.png"}
+                      alt={product.name}
                       width={41}
                       height={28}
                       className="rounded-lg"
@@ -74,9 +55,7 @@ alt={product.name}
                   <td className="p-3 text-[#323130]">{product.sales}</td>
                   <td className="p-3">
                     <span
-                      className={`px-3 py-1 text-sm font-medium rounded-lg ${
-                        product.in_stock ? "bg-[#B2FFB4] text-[#04910C]" : "bg-[#FFDCDC] text-[#FF0000]"
-                      }`}
+                      className={`px-3 py-1 text-sm font-medium rounded-lg ${product.in_stock ? "bg-[#B2FFB4] text-[#04910C]" : "bg-[#FFDCDC] text-[#FF0000]"}`}
                     >
                       {product.in_stock ? "متوفر في المخزون" : "نفذ من المخزون"}
                     </span>

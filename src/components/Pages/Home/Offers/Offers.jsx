@@ -24,11 +24,6 @@ const Offers = () => {
   ? `https://clinics.soulnbody.net/pharmacy/storage/app/public/${offer.image}`
   : "/imgs/products/no-image-available.jpg";
 
-// const galleryImages =
-//   productDetails?.gallery_images?.map(
-//     (img) =>
-//       `https://clinics.soulnbody.net/pharmacy/storage/app/public/${img}`
-//   ) || [];
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 items-center">
       <div className="image-wrapper md:order-none order-2">
@@ -52,7 +47,7 @@ const Offers = () => {
           {offer.description}
         </p>
         <Link href={`/our-products/${offer.product_id}`}>
-          <button className="md:self-center self-start rounded-xl px-10 py-3 md:mt-9 bg-[#EE446E] text-white">
+          <button className="md:self-center cursor-pointer self-start rounded-xl px-10 py-3 md:mt-9 bg-[#EE446E] text-white">
             أحصل على العرض
           </button>
         </Link>

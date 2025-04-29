@@ -4,22 +4,22 @@ import { statusColors } from "@/lib/constants";
 
 const OrderRow = ({ order, expandedOrderId, onToggleDetails, onStatusChange, statusOptions }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const isExpanded = expandedOrderId === order.shopping_id;
+  const isExpanded = expandedOrderId === order.order_id; // هنا التعديل
 
   const toggleDropdown = (e) => {
-    e.stopPropagation(); // لمنع الفتح عند التفاعل مع الـ dropdown
+    e.stopPropagation();
     setIsDropdownOpen((prev) => !prev);
   };
 
   const handleSelectStatus = (status) => {
-    onStatusChange(order.shopping_id, status);
+    onStatusChange(order.order_id, status); // هنا التعديل
     setIsDropdownOpen(false);
   };
 
   return (
     <tr
       className={`border-b ${isExpanded ? "border-0" : "border-gray-300"} last:border-0 text-gray-700 hover:bg-gray-50 cursor-pointer`}
-      onClick={() => onToggleDetails(order.shopping_id)}
+      onClick={() => onToggleDetails(order.order_id)} // هنا التعديل
     >
       <td className="p-3 text-center">
         {isExpanded ? (
@@ -28,7 +28,7 @@ const OrderRow = ({ order, expandedOrderId, onToggleDetails, onStatusChange, sta
           <FaChevronDown className="text-gray-500" />
         )}
       </td>
-      <td className="p-3">{order.shopping_id}</td>
+      <td className="p-3">{order.order_id}</td>
       <td className="p-3">{new Date(order.created_at).toLocaleDateString()}</td>
       <td className="p-3">{order.user_name}</td>
       <td className="p-3">{order.total_price} EGP</td>
@@ -42,21 +42,22 @@ const OrderRow = ({ order, expandedOrderId, onToggleDetails, onStatusChange, sta
         </div>
 
         {isDropdownOpen && (
-          <div className="absolute mt-1 w-40 bg-white rounded-lg shadow-lg border z-20 max-h-60 overflow-y-auto">
-            {statusOptions.map((status) => (
-              <div
-                key={status}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleSelectStatus(status);
-                }}
-                className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-              >
-                {status}
-              </div>
-            ))}
-          </div>
-        )}
+  <div className="absolute mt-2 w-44 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 max-h-60 overflow-y-auto">
+    {statusOptions.map((status) => (
+      <div
+        key={status}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleSelectStatus(status);
+        }}
+        className="px-4 py-3 hover:bg-blue-50 text-gray-700 hover:text-blue-600 cursor-pointer text-sm transition-colors duration-200"
+      >
+        {status}
+      </div>
+    ))}
+  </div>
+)}
+
       </td>
     </tr>
   );
