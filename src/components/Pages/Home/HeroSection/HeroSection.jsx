@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useSearchProducts } from "@/hooks/useProducts";
+import { useSearchProducts } from "@/hooks/useAuth";
 import styles from "./HeroSection.module.css";
 import Image from "next/image";
 import { IoClose } from "react-icons/io5";

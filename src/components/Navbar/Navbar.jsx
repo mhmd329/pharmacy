@@ -16,6 +16,7 @@ import SignUp from "../Modals/Signup";
 import Cart from "../Modals/Cart";
 import Search from "../Modals/Search";
 import { DotLoader } from "react-spinners"; 
+import { getCookie } from "cookies-next";
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
@@ -29,13 +30,15 @@ const Navbar = () => {
     { text: "من نحن", path: "/#footer" },
     { text: "منتجاتنا", path: "/our-products" },
     { text: "تواصل معنا", path: "#footer" },
-    // { text: "لوحة التحكم", path: "/admin" },
+    { text: "لوحة التحكم", path: "/admin" },
   ];
 
   const handleNav = () => {
     setNav(!nav);
   };
-
+const handleLogOut = () =>{
+  getCookie("tokenUser").delete
+}
   const hsndleLoader = () => {
     setIsLoading(true);
     setTimeout(() => {
@@ -76,9 +79,9 @@ const Navbar = () => {
           />
 
           {/* أيقونة تتبع الطلب */}
-          {/* <Link href="/OrderStatus">
+          <Link href="/OrderStatus">
             <FaTruck size={25} className="cursor-pointer" />
-          </Link> */}
+          </Link>
 
           <div className="relative">
             <IoCartOutline

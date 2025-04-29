@@ -25,7 +25,7 @@ const ProductDetails = ({ product }) => {
         `https://clinics.soulnbody.net/pharmacy/storage/app/public/${img}`
     ) || [];
 
-  const token = getCookie('token'); // تحقق من التوكن
+  const token = getCookie('tokenUser'); // تحقق من التوكن
 
   const handleAddToCart = () => {
     if (!token) {

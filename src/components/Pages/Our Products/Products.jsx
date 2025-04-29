@@ -4,7 +4,7 @@ import Products from "../Home/Products/Products";
 import styles from "./Products.module.css";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import Product from "../Home/Products/Product";
-import { useCategories, useCategoriesProducts } from "@/hooks/useProducts";
+import { useCategories, useCategoriesProducts } from "@/hooks/useAuth";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const OurProductsPage = () => {

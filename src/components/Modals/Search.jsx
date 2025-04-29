@@ -2,7 +2,7 @@
 import { useDispatch } from "react-redux";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useSearchProducts } from "@/hooks/useProducts";
+import { useSearchProducts } from "@/hooks/useAuth";
 import Image from "next/image";
 import { closeModal } from "@/store/slices/modal";
 import { IoClose } from "react-icons/io5";

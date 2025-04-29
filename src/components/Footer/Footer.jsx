@@ -1,6 +1,6 @@
 'use client'
 import Image from "next/image";
-import { useCategories } from "@/hooks/useProducts";
+import { useCategories } from "@/hooks/useAuth";
 import Link from "next/link";
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from "react";

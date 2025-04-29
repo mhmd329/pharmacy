@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getCookie, setCookie, deleteCookie } from 'cookies-next';
+import { getCookie, setCookie } from 'cookies-next';
+import { toast } from "react-hot-toast"; // تأكد إنه متركب
 
 const baseUrl = "https://clinics.soulnbody.net/pharmacy/public/api";
 
-export const getAuthHeader = () => {
-  const tokenAdmen = getCookie('tokenAdmen');
-  return { Authorization: `Bearer ${tokenAdmen}` };
+export const getAuthHeaderAdmin = () => {
+  const token = getCookie('tokenAdmin');
+  return { Authorization: `Bearer ${token}` };
 };
 
 const fetcher = async (endpoint, { method = "GET", headers = {}, body } = {}) => {
@@ -37,7 +38,7 @@ export const useLoginAdmin = () => {
       });
 
       if (data.token) {
-        setCookie('tokenAdmen', data.token, {
+        setCookie('tokenAdmin', data.token, {
           maxAge: 60 * 60 * 24 * 7,
           path: '/',
           secure: process.env.NODE_ENV === 'production',
@@ -51,27 +52,13 @@ export const useLoginAdmin = () => {
 };
 
 
-export const useLogout = () => {
-  return useMutation({
-    mutationFn: async () => {
-      try {
-        await fetcher('logout', {
-          method: 'POST',
-          headers: getAuthHeader(),
-        });
-      } finally {
-        deleteCookie('token');
-      }
-    }
-  });
-};
 
 export const useCreateProduct = () => {
   return useMutation({
     mutationFn: async (formData) => {
       return fetcher('products', {
         method: "POST",
-        headers: { ...getAuthHeader() },
+        headers: { ...getAuthHeaderAdmin() },
         body: formData,
       });
     },
@@ -83,12 +70,13 @@ export const useCreateOffer = () => {
     mutationFn: async (formData) => {
       return fetcher('offers', {
         method: "POST",
-        headers: { ...getAuthHeader() },
+        headers: { ...getAuthHeaderAdmin() },
         body: formData,
       });
     },
   });
 };
+
 export const useUpdatePro = () => {
   const queryClient = useQueryClient();
 
@@ -97,7 +85,7 @@ export const useUpdatePro = () => {
       return fetcher(`products/${productId}/update`, {
         method: "POST",
         headers: {
-          ...getAuthHeader(),
+          ...getAuthHeaderAdmin(),
         },
         body: formData, // أرسل formData مباشرة هنا بدون JSON.stringify
       });
@@ -131,24 +119,13 @@ export const useUpdateProfile = () => {
     mutationFn: async (formData) => {
       return fetcher('admin/profile', {
         method: "POST",
-        headers: { ...getAuthHeader() },
+        headers: { ...getAuthHeaderAdmin() },
         body: formData,
       });
     },
   });
 };
 
-export const useCreateOrder = () => {
-  return useMutation({
-    mutationFn: async (orderData) => {
-      return fetcher('order', {
-        method: "POST",
-        headers: { "Content-Type": "application/json", ...getAuthHeader() },
-        body: JSON.stringify(orderData),
-      });
-    },
-  });
-};
 
 export const useUpdateStatus = () => {
   const queryClient = useQueryClient();
@@ -156,7 +133,7 @@ export const useUpdateStatus = () => {
     mutationFn: async ({ orderId, formData }) => {
       return fetcher(`orders/${orderId}/update_status`, {
         method: "POST",
-        headers: { ...getAuthHeader() },
+        headers: { ...getAuthHeaderAdmin() },
         body: formData,
       });
     },
@@ -166,14 +143,13 @@ export const useUpdateStatus = () => {
   });
 };
 
-// Queries
+
+
 export const useOffers = () => {
   return useQuery({
     queryKey: ["offers"],
     queryFn: async () => {
-      return fetcher('all_offers', {
-        headers: getAuthHeader(),
-      });
+      return fetcher('all_offers');
     },
     staleTime: 1000 * 60 * 5,
     keepPreviousData: true,
@@ -185,20 +161,7 @@ export const useCustomers = () => {
     queryKey: ["customers"],
     queryFn: async () => {
       return fetcher('admin/clients/order-details', {
-        headers: getAuthHeader(),
-      });
-    },
-    staleTime: 1000 * 60 * 5,
-    keepPreviousData: true,
-  });
-};
-
-export const usePendingOrders = () => {
-  return useQuery({
-    queryKey: ["userOrders"],
-    queryFn: async () => {
-      return fetcher('userOrders', {
-        headers: getAuthHeader(),
+        headers: getAuthHeaderAdmin(),
       });
     },
     staleTime: 1000 * 60 * 5,
@@ -211,9 +174,22 @@ export const useOrdersData = () => {
     queryKey: ["orders_data"],
     queryFn: async () => {
       const data = await fetcher('orders_data', {
-        headers: getAuthHeader(),
+        headers: getAuthHeaderAdmin(),
       });
       return data.orders || [];
+    },
+    staleTime: 1000 * 60 * 5,
+    keepPreviousData: true,
+  });
+};
+export const useGetMonthlyAverages = () => {
+  return useQuery({
+    queryKey: ["getMonthlyAverages"],
+    queryFn: async () => {
+      const data = await fetcher('admin/getMonthlyAverages', {
+        headers: getAuthHeaderAdmin(),
+      });
+      return data.monthly_averages || {}; // إرجاع كائن فارغ بدلاً من مصفوفة
     },
     staleTime: 1000 * 60 * 5,
     keepPreviousData: true,
@@ -225,7 +201,7 @@ export const useFinancial = () => {
     queryKey: ["money_transfers"],
     queryFn: async () => {
       return fetcher('money-transfers', {
-        headers: getAuthHeader(),
+        headers: getAuthHeaderAdmin(),
       });
     },
     staleTime: 1000 * 60 * 5,
@@ -238,7 +214,7 @@ export const useDashboardStats = () => {
     queryKey: ["stats"],
     queryFn: async () => {
       return fetcher('admin/getDashboardStats', {
-        headers: getAuthHeader(),
+        headers: getAuthHeaderAdmin(),
       });
     },
     staleTime: 1000 * 60 * 5,
@@ -251,10 +227,184 @@ export const useMostSold = () => {
     queryKey: ["products/most-sold"],
     queryFn: async () => {
       return fetcher('products/most-sold', {
-        headers: getAuthHeader(),
+        headers: getAuthHeaderAdmin(),
       });
     },
     staleTime: 1000 * 60 * 5,
     keepPreviousData: true,
+  });
+};
+
+
+
+
+//for token user
+
+const getAuthHeaderUser = () => {
+  const token = getCookie("tokenUser");
+  return { Authorization: `Bearer ${token}` };
+};
+
+export const useLoginUser = () => {
+  return useMutation({
+    mutationFn: async (formData) => {
+      const data = await fetcher('login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (data.token) {
+        setCookie('tokenUser', data.token, {
+          maxAge: 60 * 60 * 24 * 7,
+          path: '/',
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax'
+        });
+      }
+
+      return data;
+    }
+  });
+};
+
+export const useCreateOrder = () => {
+  return useMutation({
+    mutationFn: async (orderData) => {
+      return fetcher('order', {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...getAuthHeaderUser() },
+        body: JSON.stringify(orderData),
+      });
+    },
+  });
+};
+
+export const useProducts = () => {
+  return useQuery({
+    queryKey: ["products"],
+    queryFn: () => fetcher("pro"),
+    staleTime: 1000 * 60 * 5,
+    keepPreviousData: true,
+  });
+};
+
+export const useSearchProducts = (searchTerm) => {
+  return useQuery({
+    queryKey: ["search-products", searchTerm],
+    queryFn: async () => {
+      if (!searchTerm) return [];
+      const allProducts = await fetcher("all_products", getAuthHeaderUser());
+      return allProducts.filter(product =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    },
+    enabled: !!searchTerm,
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const useProductDetails = (id) => {
+  return useQuery({
+    queryKey: ["product", id],
+    queryFn: async () => {
+      if (!id) return null;
+      return await fetcher(`pro/${id}`);
+    },
+    enabled: !!id,
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const useRecentProducts = () => {
+  return useQuery({
+    queryKey: ["recent-products"],
+    queryFn: () => fetcher("recently-added"),
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const useMostSoldProducts = () => {
+  return useQuery({
+    queryKey: ["most-sold-products"],
+    queryFn: () => fetcher("most-sold"),
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const useCategories = () => {
+  return useQuery({
+    queryKey: ["categories"],
+    queryFn: () => fetcher("cats"),
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const useCategoriesProducts = (id) => {
+  return useQuery({
+    queryKey: ["categories-products", id],
+    queryFn: async () => {
+      if (!id) return null;
+      return await fetcher(`cats/${id}/products`);
+    },
+    enabled: !!id,
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const useUserOrders = () => {
+  const queryClient = useQueryClient();
+
+  return useQuery({
+    queryKey: ["useUserOrders"],
+    queryFn: async () => {
+      const headers = getAuthHeaderUser();  // تأكد من أن التوكن في الـ headers
+
+      const data = await fetcher("userOrders", {headers});
+
+      if (!data || !data.orders) {
+        console.error("No pending_orders in the response");
+        return [];
+      }
+
+      return data.orders;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['useUserOrders']);
+    },
+    staleTime: 1000 * 60 * 5,
+    keepPreviousData: true,
+    onError: (error) => {
+      console.error("Error fetching user pending orders:", error);
+    },
+  });
+};export const useCancelOrder = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ orderId }) => {
+      const data = await fetcher(`cancel_order/${orderId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...getAuthHeaderUser(),
+        },
+      });
+
+      // إذا كان الخادم يُرجع رسالة خطأ في البيانات
+      if (data?.error) {
+        console.error("API Error:", data.error);
+        throw new Error(data.error.message || "Failed to cancel order");
+      }
+
+      return data; // إرجاع البيانات إذا نجح الطلب
+    },
+    onSuccess: () => {
+      toast.success("تم إلغاء الطلب بنجاح");
+      queryClient.invalidateQueries(["userPendingOrders"]); // إعادة جلب البيانات بعد الإلغاء
+    },
+    onError: (error) => {
+      toast.error(error.message || "حدث خطأ أثناء إلغاء الطلب");
+    },
   });
 };

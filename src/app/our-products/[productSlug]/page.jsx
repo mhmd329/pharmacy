@@ -1,6 +1,6 @@
 "use client";
 import ProductDetails from '@/components/Pages/Product Details/ProductDetails';
-import { useProductDetails } from '@/hooks/useProducts';
+import { useProductDetails } from '@/hooks/useAuth';
 import { useParams } from 'next/navigation';
 
 const Product = () => {

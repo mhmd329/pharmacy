@@ -42,21 +42,21 @@ const OrderRow = ({ order, expandedOrderId, onToggleDetails, onStatusChange, sta
         </div>
 
         {isDropdownOpen && (
-  <div className="absolute mt-2 w-44 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 max-h-60 overflow-y-auto">
-    {statusOptions.map((status) => (
-      <div
-        key={status}
-        onClick={(e) => {
-          e.stopPropagation();
-          handleSelectStatus(status);
-        }}
-        className="px-4 py-3 hover:bg-blue-50 text-gray-700 hover:text-blue-600 cursor-pointer text-sm transition-colors duration-200"
-      >
-        {status}
-      </div>
-    ))}
-  </div>
-)}
+          <div className="absolute mt-2 w-44 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 max-h-60 overflow-y-auto">
+            {statusOptions.map((status) => (
+              <div
+                key={status}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSelectStatus(status);
+                }}
+                className="px-4 py-3 hover:bg-blue-50 text-gray-700 hover:text-blue-600 cursor-pointer text-sm transition-colors duration-200"
+              >
+                {status}
+              </div>
+            ))}
+          </div>
+        )}
 
       </td>
     </tr>

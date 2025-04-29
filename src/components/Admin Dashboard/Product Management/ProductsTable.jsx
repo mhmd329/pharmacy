@@ -5,7 +5,7 @@ import { FaEdit, FaEye, FaTrash } from "react-icons/fa"; // إضافة أيقو�
 import { FiSearch } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
 import Link from "next/link";
-import { useProducts } from "@/hooks/useProducts";
+import { useProducts } from "@/hooks/useAuth";
 import ProductModal from './EditProductForm';
 import ProductDetails from './ProducDetail'
 const ProductsTable = () => {

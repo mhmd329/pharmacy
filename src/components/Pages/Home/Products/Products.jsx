@@ -10,7 +10,7 @@ import {
   useMostSoldProducts,
   useProducts,
   useRecentProducts,
-} from "@/hooks/useProducts";
+} from "@/hooks/useAuth";
 
 const Products = ({ title, relatedProducts }) => {
   const { data: products } = useProducts();

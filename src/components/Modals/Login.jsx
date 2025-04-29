@@ -6,7 +6,7 @@ import { closeModal, openModal } from "@/store/slices/modal";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { IoClose } from "react-icons/io5";
-import { useLoginUser } from "@/hooks/useProducts";
+import { useLoginUser } from "@/hooks/useAuth";
 import { toast } from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 

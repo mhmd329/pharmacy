@@ -8,7 +8,7 @@ import OrderRow from "./components/order-table-row";
 import OrderDetailsRow from "./components/order-details-row";
 import Pagination from "./components/pagination";
 import { useUpdateStatus } from "@/hooks/useAuth";
-
+import { statusColors } from "@/lib/constants";
 const ITEMS_PER_PAGE = 5;
 
 const OrdersTable = () => {

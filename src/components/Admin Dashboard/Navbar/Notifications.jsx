@@ -30,9 +30,8 @@ const Notifications = () => {
       onClick={() => dispatch(closeModal("Notifications"))}
     >
       <div
-        className={`fixed left-0 top-0 h-full w-full sm:w-[400px] bg-white shadow-lg z-50 p-4 overflow-y-auto transition-all duration-300 ${
-          show ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed left-0 top-0 h-full w-full sm:w-[400px] bg-white shadow-lg z-50 p-4 overflow-y-auto transition-all duration-300 ${show ? "translate-x-0" : "-translate-x-full"
+          }`}
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -82,7 +81,7 @@ const Notifications = () => {
 
                 <div className="flex flex-col sm:flex-row gap-2 mt-4">
                   <Link href="/admin/orders" className="w-full sm:w-auto">
-                    <button className="w-full sm:w-auto bg-[#EE446E] text-white px-4 py-2 rounded-lg">
+                    <button className="w-full sm:w-auto bg-[#EE446E] text-white px-4 py-2 rounded-lg" onClick={() => dispatch(closeModal("Notifications"))}>
                       تجهيز
                     </button>
                   </Link>

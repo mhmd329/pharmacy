@@ -26,7 +26,7 @@ const Product = ({
   const imageUrl = getImageUrl(cardImgPath);
 
   const handleAddToCart = () => {
-    const token = getCookie('token');
+    const token = getCookie('tokenUser');
     if (!token) {
       // إذا مفيش توكن، نفتح مودال تسجيل الدخول
       dispatch(openModal("login"));

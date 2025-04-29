@@ -1,7 +1,7 @@
 'use client';
 import React from "react";
 import Category from "./Category";
-import { useCategories } from "@/hooks/useProducts";
+import { useCategories } from "@/hooks/useAuth"
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
