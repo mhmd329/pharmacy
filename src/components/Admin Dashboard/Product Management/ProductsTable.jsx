@@ -42,9 +42,9 @@ const ProductsTable = () => {
 
   const getValidImageUrl = (url) => {
     if (!url) {
-      return "/imgs/admin/best-selling-product.png";
+     return "/imgs/admin/best-selling-product.png";
     }
-    return `http://clinics.soulnbody.net/pharmacy/storage/app/public/${url}`;
+    return `https://clinics.soulnbody.net/pharmacy/storage/app/public/${url}`;
   };
 
   const handleEdit = (product) => {

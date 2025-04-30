@@ -1,7 +1,7 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     domains: ["clinics.soulnbody.net"],
+    unoptimized: true, // لتعطيل تحسين الصور الخارجية
   },
   async rewrites() {
     return [

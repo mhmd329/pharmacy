@@ -38,7 +38,7 @@ const BestSellingProducts = () => {
             <tbody>
               {products.map((product) => {
                 const imageUrl = product.image
-                  ? `http://clinics.soulnbody.net/pharmacy/storage/app/public/${product.image}`
+                  ? `https://clinics.soulnbody.net/pharmacy/storage/app/public/${product.image}`
                   : "/imgs/products/no-image-available.jpg";
 
                 return (

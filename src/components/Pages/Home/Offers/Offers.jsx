@@ -31,7 +31,7 @@ const Offers = () => {
     >
       {offers.map((offer) => {
         const mainImage = offer?.image
-          ? `https://clinics.soulnbody.net/pharmacy/storage/app/public/${offer.image}`
+         ? `https://clinics.soulnbody.net/pharmacy/storage/app/public/${offer.image}`
           : "/imgs/products/no-image-available.jpg";
 
         return (

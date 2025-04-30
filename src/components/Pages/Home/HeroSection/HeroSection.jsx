@@ -73,8 +73,8 @@ const HeroSection = () => {
     if (!path) return "/imgs/products/no-image-available.jpg";
     if (path.startsWith("http")) return path;
     if (path.startsWith("/")) return path;
-    return `http://clinics.soulnbody.net/pharmacy/storage/app/public/${path}`;
-  };
+    return `https://clinics.soulnbody.net/pharmacy/storage/app/public/${path}`;
+  }
 
   return (
     <div className={`${styles["hero-section"]} h-screen flex justify-center items-center`}>

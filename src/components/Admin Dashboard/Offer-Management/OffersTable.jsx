@@ -41,7 +41,7 @@ const OffersTable = () => {
     if (!url) {
       return "/imgs/admin/best-selling-product.png";
     }
-    return `http://clinics.soulnbody.net/pharmacy/storage/app/public/${url}`;
+    return `https://clinics.soulnbody.net/pharmacy/storage/app/public/${url}`;
   };
 
   const handleEdit = (offer) => {

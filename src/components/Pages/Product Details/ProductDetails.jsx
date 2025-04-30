@@ -16,13 +16,13 @@ const ProductDetails = ({ product }) => {
 
   const productDetails = product?.product;
   const mainImage = productDetails?.image
-    ? `http://clinics.soulnbody.net/pharmacy/storage/app/public/${productDetails.image}`
+    ? `https://clinics.soulnbody.net/pharmacy/storage/app/public/${productDetails.image}`
     : "/imgs/products/no-image-available.jpg";
 
   const galleryImages =
     productDetails?.gallery_images?.map(
       (img) =>
-        `http://clinics.soulnbody.net/pharmacy/storage/app/public/${img}`
+        `https://clinics.soulnbody.net/pharmacy/storage/app/public/${img}`
     ) || [];
 
   const token = getCookie('tokenUser'); // تحقق من التوكن
