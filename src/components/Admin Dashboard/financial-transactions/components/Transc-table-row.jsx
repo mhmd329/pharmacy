@@ -21,7 +21,7 @@ const FinancialRow = ({ order, expandedOrderId, onToggleDetails }) => {
       <td className="p-3">{order.order_code}</td>
       <td className="p-3">{new Date(order.created_at).toLocaleDateString()}</td>
       <td className="p-3">{order.username}</td>
-      <td className="p-3">{order.total_price_with_delivery} EGP</td>
+      <td className="p-3">{order.total_price_with_delivery} د.أ</td>
       <td className="p-3">
         <div
           className={`flex items-center gap-2 w-fit px-3 py-1 text-sm font-medium rounded-lg ${statusColors[order.status] || "bg-gray-100 text-gray-600"

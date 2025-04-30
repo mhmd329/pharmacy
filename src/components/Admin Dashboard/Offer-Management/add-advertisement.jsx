@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useCreateOffer } from "@/hooks/useAuth";
+import Link from "next/link";
 
 const AddAdvertisement = () => {
   const [imageFile, setImageFile] = useState(null);
@@ -71,8 +72,15 @@ const AddAdvertisement = () => {
 
   return (
     <div className="flex flex-col items-center p-6 border border-gray-300 rounded-lg w-full bg-white shadow-md">
-      <h2 className="text-xl font-semibold mb-4 text-right w-full">صور العرض</h2>
+     <div className="flex justify-end">
+     <h2 className="text-xl font-semibold mb-4 text-right w-full">صور العرض</h2>
 
+        <Link href="/PharmaAdmin/product-management">
+          <button className="bg-[#EE446E] text-white px-4 py-2 rounded-lg cursor-pointer">
+            الرجوع الي المنتجات
+          </button>
+        </Link>
+      </div>
       {/* حقل رفع الصورة */}
       <div
         {...getRootProps()}

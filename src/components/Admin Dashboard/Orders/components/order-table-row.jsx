@@ -31,7 +31,7 @@ const OrderRow = ({ order, expandedOrderId, onToggleDetails, onStatusChange, sta
       <td className="p-3">{order.order_id}</td>
       <td className="p-3">{new Date(order.created_at).toLocaleDateString()}</td>
       <td className="p-3">{order.user_name}</td>
-      <td className="p-3">{order.total_price} EGP</td>
+      <td className="p-3">{order.total_price} د.أ</td>
       <td className="p-3 relative">
         <div
           onClick={toggleDropdown}

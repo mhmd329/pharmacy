@@ -41,11 +41,10 @@ const Footer = () => {
                     {data.map((category) => (
                         <p
                             key={category.id}
-                            className={`cursor-pointer hover:text-[#d93961] ${
-                                activeCategory === category.id.toString()
-                                   ? "text-blue-500 font-bold"
-                                    : ""
-                            }`}
+                            className={`cursor-pointer hover:text-[#d93961] ${activeCategory === category.id.toString()
+                                ? "text-blue-500 font-bold"
+                                : ""
+                                }`}
                         >
                             <Link href={`/our-products?category=${category.id}`}>
                                 {category.name}
@@ -65,10 +64,19 @@ const Footer = () => {
                 </p>
                 <p className="md:text-[20px] text-[16px] font-light text-black">تواصل معانا</p>
                 <div className="flex gap-6">
-                    <Image src="/imgs/logo_facebook.png" alt="facebook" width={40} height={40} />
-                    <Image src="/imgs/logo_twitter.png" alt="instagram" width={40} height={40} />
-                    <Image src="/imgs/logo_whatsapp.png" alt="youtube" width={40} height={40} />
+                    <a href="https://www.facebook.com/share/1BNLrjTaFc/" target="_blank" rel="noopener noreferrer">
+                        <Image src="/imgs/logo_facebook.png" alt="facebook" width={40} height={40} />
+                    </a>
+                    <a href="https://www.instagram.com/souln_body?igsh=b3pzazlhdHNlcWdq" target="_blank" rel="noopener noreferrer">
+                        <Image src="https://upload.wikimedia.org/wikipedia/commons/9/95/Instagram_logo_2022.svg" alt="instagram" width={40} height={40} />
+                    </a>
+
+                    <a href="https://wa.me/your-phone-number" target="_blank" rel="noopener noreferrer">
+                        <Image src="/imgs/logo_whatsapp.png" alt="whatsapp" width={40} height={40} />
+                    </a>
                 </div>
+
+
             </div>
         </div>
     );

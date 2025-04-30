@@ -8,7 +8,6 @@ import { useCategories, useCategoriesProducts } from "@/hooks/useAuth";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const OurProductsPage = () => {
-  // الفئات و ترتيب الأسعار
   const priceRanges = [
     { label: "20 - 50", value: "20 - 50" },
     { label: "60 - 100", value: "60 - 100" },
@@ -20,23 +19,21 @@ const OurProductsPage = () => {
     { label: "من الأعلى للأقل", value: "desc" },
   ];
 
-  // حالة الفلاتر
   const [isPriceOpen, setIsPriceOpen] = useState(false);
-  const [selectedPrices, setSelectedPrices] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [activeCategory, setActiveCategory] = useState("");
   const [sortOrder, setSortOrder] = useState("");
 
-  // التوجيه والبحث في الرابط
+  const [selectedPrices, setSelectedPrices] = useState([]);
+  const [tempSelectedPrices, setTempSelectedPrices] = useState([]);
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const categoryFromURL = searchParams.get("category");
 
-  // جلب البيانات من ال API
   const { data: categories = [] } = useCategories();
   const { data: categoryProducts, isLoading } = useCategoriesProducts(activeCategory);
 
-  // تعيين الفئة الافتراضية عند التحميل
   useEffect(() => {
     if (categories.length > 0 && !categoryFromURL) {
       const defaultCategory = categories[0].id.toString();
@@ -47,7 +44,6 @@ const OurProductsPage = () => {
     }
   }, [categories, categoryFromURL]);
 
-  // تطبيق الفلاتر تلقائياً عند تغيير أي من المعايير
   useEffect(() => {
     if (categoryProducts?.products) {
       handleFilter();
@@ -57,21 +53,34 @@ const OurProductsPage = () => {
   const handleCategoryChange = (categoryId) => {
     setActiveCategory(categoryId);
     router.push(`/our-products?category=${categoryId}`);
-    // إعادة تعيين الفلاتر عند تغيير الفئة
     setSelectedPrices([]);
+    setTempSelectedPrices([]);
     setSortOrder("");
+  };
+
+  const handleTempPriceSelection = (value) => {
+    setTempSelectedPrices(prev =>
+      prev.includes(value)
+        ? prev.filter(v => v !== value)
+        : [...prev, value]
+    );
+  };
+
+  const togglePriceFilter = () => {
+    setIsPriceOpen(!isPriceOpen);
   };
 
   const handleFilter = () => {
     if (!categoryProducts?.products) return;
 
+    setSelectedPrices(tempSelectedPrices);
+
     let filtered = [...categoryProducts.products];
 
-    // تطبيق فلتر السعر
-    if (selectedPrices.length > 0) {
+    if (tempSelectedPrices.length > 0) {
       filtered = filtered.filter((product) => {
         const price = product.price_after_discount;
-        return selectedPrices.some((range) => {
+        return tempSelectedPrices.some((range) => {
           if (range === "+100") return price > 100;
           const [min, max] = range.split(" - ").map(Number);
           return price >= min && price <= max;
@@ -79,7 +88,6 @@ const OurProductsPage = () => {
       });
     }
 
-    // ترتيب المنتجات حسب السعر
     if (sortOrder === "asc") {
       filtered.sort((a, b) => a.price_after_discount - b.price_after_discount);
     } else if (sortOrder === "desc") {
@@ -89,31 +97,19 @@ const OurProductsPage = () => {
     setFilteredProducts(filtered);
   };
 
-  const togglePriceFilter = () => {
-    setIsPriceOpen(!isPriceOpen);
-  };
-
-  const handlePriceSelection = (value) => {
-    setSelectedPrices(prev =>
-      prev.includes(value)
-        ? prev.filter(v => v !== value)
-        : [...prev, value]
-    );
-  };
-
-  const productsToDisplay = filteredProducts.length > 0 
-    ? filteredProducts 
+  const productsToDisplay = filteredProducts.length > 0
+    ? filteredProducts
     : categoryProducts?.products || [];
 
   return (
-    <div  className="pt-40 mx-10">
+    <div className="pt-40 mx-10">
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* قسم الفلاتر الجانبي على اليسار */}
+        {/* الفلاتر الجانبية */}
         <div className="lg:w-1/4">
           <div className={`${styles["options-wrapper"]} sticky top-32`}>
             <h4 className={styles["heading"]}>تحديد الخيارات</h4>
             <div className="w-full flex flex-col gap-3 ps-5">
-              <div 
+              <div
                 className="flex items-center justify-between cursor-pointer text-sm font-medium"
                 onClick={togglePriceFilter}
               >
@@ -128,8 +124,8 @@ const OurProductsPage = () => {
                       <input
                         type="checkbox"
                         id={`price-${value}`}
-                        checked={selectedPrices.includes(value)}
-                        onChange={() => handlePriceSelection(value)}
+                        checked={tempSelectedPrices.includes(value)}
+                        onChange={() => handleTempPriceSelection(value)}
                         className="cursor-pointer"
                       />
                       <label htmlFor={`price-${value}`} className="text-sm cursor-pointer">
@@ -150,9 +146,8 @@ const OurProductsPage = () => {
           </div>
         </div>
 
-        {/* قسم المحتوى الرئيسي */}
+        {/* قائمة المنتجات */}
         <div className="lg:w-3/4">
-          {/* فلتر الترتيب في أعلى اليسار */}
           <div dir="ltr" className="flex justify-start mb-6">
             <div className="flex flex-col gap-2">
               <p className="font-semibold text-lg text-right">ترتيب السعر</p>
@@ -171,17 +166,15 @@ const OurProductsPage = () => {
             </div>
           </div>
 
-          {/* شريط التصنيفات */}
-          <div className="flex justify-start my-8 overflow-x-auto pb-2">
+          <div className="flex justify-start sticky top-32 z-20 my-8 overflow-x-auto pb-2 bg-white">
             <div className="flex gap-4">
               {categories.map(({ id, name }) => (
                 <button
                   key={id}
-                  className={`p-2 transition-all rounded-md cursor-pointer whitespace-nowrap ${
-                    activeCategory === id.toString() 
-                      ? "text-[#EE446E] font-medium" 
+                  className={`p-2 transition-all rounded-md cursor-pointer whitespace-nowrap ${activeCategory === id.toString()
+                      ? "text-[#EE446E] font-medium"
                       : "text-black hover:text-[#EE446E]"
-                  }`}
+                    }`}
                   onClick={() => handleCategoryChange(id.toString())}
                 >
                   {name}
@@ -190,7 +183,7 @@ const OurProductsPage = () => {
             </div>
           </div>
 
-          {/* قائمة المنتجات */}
+
           {isLoading ? (
             <div className="flex justify-center py-20">
               <p>جاري تحميل المنتجات...</p>
@@ -216,7 +209,6 @@ const OurProductsPage = () => {
         </div>
       </div>
 
-      {/* قسم المنتجات المضافة حديثاً */}
       <div className="mt-20">
         <Products title="أضيف حديثا" />
       </div>

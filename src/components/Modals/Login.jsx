@@ -43,7 +43,7 @@ const Login = () => {
     }
 
     if (login.isError) {
-      toast.error(login.error?.message || "فشل تسجيل الدخول. تأكد من البيانات وحاول مرة أخرى.");
+      toast.error("فشل تسجيل الدخول. تأكد من البيانات وحاول مرة أخرى.");
     }
   }, [login.isSuccess, login.isError, login.data, login.error, dispatch, formik, queryClient]);
 

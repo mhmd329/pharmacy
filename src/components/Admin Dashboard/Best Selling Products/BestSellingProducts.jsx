@@ -38,7 +38,7 @@ const BestSellingProducts = () => {
             <tbody>
               {products.map((product) => {
                 const imageUrl = product.image
-                  ? `https://clinics.soulnbody.net/pharmacy/storage/app/public/${product.image}`
+                  ? `http://clinics.soulnbody.net/pharmacy/storage/app/public/${product.image}`
                   : "/imgs/products/no-image-available.jpg";
 
                 return (
@@ -55,7 +55,7 @@ const BestSellingProducts = () => {
                         <p className="text-[#323130] text-sm">{product.name}</p>
                       </div>
                     </td>
-                    <td className="p-3 text-[#323130]">{product.price_after_discount} EGP</td>
+                    <td className="p-3 text-[#323130]">{product.price_after_discount} د.أ</td>
                     <td className="p-3 text-[#323130]">{product.sales_count}</td>
                     <td className="p-3">
                       <span

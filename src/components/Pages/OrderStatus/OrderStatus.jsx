@@ -144,7 +144,7 @@ const OrderStatus = () => {
                               </p>
                               <p className="text-[#383838] text-[18px] font-semibold">
                                 {item?.product_price
-                                  ? `ر.س ${item.product_price}`
+                                  ? `د.أ ${item.product_price}`
                                   : "السعر غير متوفر"}
                               </p>
                             </div>

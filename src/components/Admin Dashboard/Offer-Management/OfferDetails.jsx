@@ -1,4 +1,4 @@
-const ProductDetails = ({ product, setViewingProduct }) => {
+const OfferDetails = ({ product, setViewingProduct }) => {
     if (!product) {
         return <div>لا توجد معلومات عن المنتج.</div>;
     }
@@ -54,4 +54,4 @@ const ProductDetails = ({ product, setViewingProduct }) => {
     );
 };
 
-export default ProductDetails;
+export default OfferDetails;

@@ -46,7 +46,7 @@ const SignUp = () => {
                     dispatch(openModal("login")); // فتح الـ login مباشرة
                 },
                 onError: (error) => {
-                    toast.error(error.message || "حدث خطأ أثناء التسجيل");
+                    toast.error( "حدث خطأ أثناء التسجيل");
                 }
             });
         },

@@ -15,41 +15,38 @@ import {
 } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { useFinancial } from "@/hooks/useAuth";
-import { useOrdersData } from "@/hooks/useAuth";
-import { useCustomers } from "@/hooks/useAuth";
+import { useFinancial,useOrdersData,useCustomers,useOffers} from "@/hooks/useAuth";
 import { DotLoader } from "react-spinners"; // استيراد الـ DotLoader
 const Sidebar = () => {
   const dispatch = useDispatch();
   const { isSidebarOpen } = useSelector((state) => state.sidebar);
   const pathname = usePathname();
-  const [openSubMenu, setOpenSubMenu] = useState(
-    pathname.startsWith("/admin/product-management")
-  );
+  
   const { data: financialTransactions = [] } = useFinancial();
   const { data: orders = [] } = useOrdersData();
   const { data: clientsData = [] } = useCustomers();
+  const { data: offers = [] } = useOffers();
 
   // حالة لتخزين الرابط النشط
   const [activeLink, setActiveLink] = useState(pathname);
-  const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
   const handleLinkClick = (link) => {
 
     setIsLoading(true)
     setTimeout(() => {
       setIsLoading(false)
     }, 1000);
-        setActiveLink(link);
+    setActiveLink(link);
     // إغلاق الشريط الجانبي
     dispatch(closeSidebar());
   };
 
-  
-  
+
+
   return (
     <>
-     {/* عرض الـ loading أثناء التوجيه */}
-     {isLoading && (
+      {/* عرض الـ loading أثناء التوجيه */}
+      {isLoading && (
         <div className="fixed top-0 left-0 w-full h-full bg-opacity-50 bg-gray-900 flex items-center justify-center z-50">
           <DotLoader size={50} color="#EE446E" />
         </div>
@@ -89,58 +86,52 @@ const Sidebar = () => {
                 <FaHome className="mr-2" /> لوحة التحكم
               </li>
             </Link>
-
-            <Link
-              href="/PharmaAdmin/product-management"
-              onClick={() => handleLinkClick("/PharmaAdmin/product-management")}
-              className="flex items-center justify-between gap-2 w-full"
-            >
-              <li className="flex flex-col">
-                <div
-                  className={`flex items-center justify-between p-2 text-gray-700 rounded-lg cursor-pointer ${activeLink === "/admin/product-management" ? "bg-pink-100" : "hover:bg-pink-100"
-                    }`}
-                  onClick={() => setOpenSubMenu(!openSubMenu)}
-                >
-
-                  <div className="flex items-center gap-2">
-                    <FaBox className="mr-2" /> إدارة المنتجات
-                  </div>
-
-                </div>
-
+            <Link href="/PharmaAdmin/product-management" onClick={() => handleLinkClick("/PharmaAdmin/product-management")} className="flex items-center gap-2">
+              <li
+                className={`flex items-center p-2 text-gray-700 ${activeLink === "/PharmaAdmin/product-management" ? "bg-pink-100" : "hover:bg-pink-100"} rounded-lg`}
+              >
+                <FaMoneyCheckAlt className="mr-2" /> ادارة المنتجات
               </li>
             </Link>
-            {/* تحويلات مالية */}
-            <Link href="/PharmaAdmin/financial-transactions" onClick={() => handleLinkClick("/admin/financial-transactions")} className="flex items-center gap-2">
+            <Link href="/PharmaAdmin/offer-management" onClick={() => handleLinkClick("/PharmaAdmin/offer-management")} className="flex items-center gap-2">
               <li
-                className={`flex items-center p-2 text-gray-700 ${activeLink === "/admin/financial-transactions" ? "bg-pink-100" : "hover:bg-pink-100"} rounded-lg`}
+                className={`flex items-center p-2 text-gray-700 ${activeLink === "/PharmaAdmin/offer-management" ? "bg-pink-100" : "hover:bg-pink-100"} rounded-lg`}
+              >
+                <FaMoneyCheckAlt className="mr-2" /> ادارة العروض  ({offers?.data?.length || 0})
+              </li>
+            </Link>
+
+            {/* تحويلات مالية */}
+            <Link href="/PharmaAdmin/financial-transactions" onClick={() => handleLinkClick("/PharmaAdmin/financial-transactions")} className="flex items-center gap-2">
+              <li
+                className={`flex items-center p-2 text-gray-700 ${activeLink === "/PharmaAdmin/financial-transactions" ? "bg-pink-100" : "hover:bg-pink-100"} rounded-lg`}
               >
                 <FaMoneyCheckAlt className="mr-2" /> تحويلات مالية ({financialTransactions?.length || 0})
               </li>
             </Link>
 
             {/* الطلبات */}
-            <Link href="/PharmaAdmin/orders" onClick={() => handleLinkClick("/admin/orders")} className="flex items-center gap-2">
+            <Link href="/PharmaAdmin/orders" onClick={() => handleLinkClick("/PharmaAdmin/orders")} className="flex items-center gap-2">
               <li
-                className={`flex items-center p-2 text-gray-700 ${activeLink === "/admin/orders" ? "bg-pink-100" : "hover:bg-pink-100"} rounded-lg`}
+                className={`flex items-center p-2 text-gray-700 ${activeLink === "/PharmaAdmin/orders" ? "bg-pink-100" : "hover:bg-pink-100"} rounded-lg`}
               >
                 <FaClipboardList className="mr-2" /> الطلبات ({orders?.length || 0})
               </li>
             </Link>
 
             {/* العملاء */}
-            <Link href="/PharmaAdmin/customers" onClick={() => handleLinkClick("/admin/customers")} className="flex items-center gap-2">
+            <Link href="/PharmaAdmin/customers" onClick={() => handleLinkClick("/PharmaAdmin/customers")} className="flex items-center gap-2">
               <li
-                className={`flex items-center p-2 text-gray-700 ${activeLink === "/admin/customers" ? "bg-pink-100" : "hover:bg-pink-100"} rounded-lg`}
+                className={`flex items-center p-2 text-gray-700 ${activeLink === "/PharmaAdmin/customers" ? "bg-pink-100" : "hover:bg-pink-100"} rounded-lg`}
               >
                 <FaUsers className="mr-2" /> العملاء ({clientsData?.clients?.length || 0})
               </li>
             </Link>
 
 
-            <Link href="/PharmaAdmin/profile" onClick={() => handleLinkClick("/admin/profile")} className="flex items-center gap-2">
+            <Link href="/PharmaAdmin/profile" onClick={() => handleLinkClick("/PharmaAdmin/profile")} className="flex items-center gap-2">
               <li
-                className={`flex items-center p-2 text-gray-700 ${activeLink === "/admin/profile"
+                className={`flex items-center p-2 text-gray-700 ${activeLink === "/PharmaAdmin/profile"
                   ? "bg-pink-100"
                   : "hover:bg-pink-100"
                   } rounded-lg`}

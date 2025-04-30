@@ -16,13 +16,13 @@ const ProductDetails = ({ product }) => {
 
   const productDetails = product?.product;
   const mainImage = productDetails?.image
-    ? `https://clinics.soulnbody.net/pharmacy/storage/app/public/${productDetails.image}`
+    ? `http://clinics.soulnbody.net/pharmacy/storage/app/public/${productDetails.image}`
     : "/imgs/products/no-image-available.jpg";
 
   const galleryImages =
     productDetails?.gallery_images?.map(
       (img) =>
-        `https://clinics.soulnbody.net/pharmacy/storage/app/public/${img}`
+        `http://clinics.soulnbody.net/pharmacy/storage/app/public/${img}`
     ) || [];
 
   const token = getCookie('tokenUser'); // تحقق من التوكن
@@ -53,15 +53,14 @@ const ProductDetails = ({ product }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           
           {/* محتوى المنتج */}
-          <div className="product-content flex flex-col gap-3 order-2 md:order-1">
-            <div className="header flex justify-between text-[20px] md:text-[22px] font-medium text-[#383838]">
-              <h2>{productDetails?.name || "product name"}</h2>
+          <div className="product-content flex flex-col gap-3 order-2 md:order-1 px-4 md:px-0">
+          <h2 className="text-">{productDetails?.name || "product name"}</h2>
               <h3>
                 {productDetails?.price_after_discount
-                  ? `$${productDetails.price_after_discount}`
+                  ? `د.أ ${productDetails.price_after_discount}`
                   : "السعر غير متوفر"}
               </h3>
-            </div>
+          
             <p className="text-[#697586] text-[14px] md:text-[16px]">
               {productDetails?.description || "لا يوجد وصف للمنتج"}
             </p>

@@ -32,7 +32,7 @@ const CartItem = ({ item }) => {
           href={`/our-products/${item.id}`}>
           <h3 className="font-medium hover:text-[#EE446E]">{item?.name || "اسم المنتج غير موجود"}</h3>
         </Link>
-        <p className="text-2xl">${item?.price || "سعر المنتج غير موجود"}</p>
+        <p className="text-2xl">د.أ{item?.price || "سعر المنتج غير موجود"}</p>
         <div className="flex justify-between items-center">
           <div className="quantity-wrapper flex justify-between items-center gap-2 border-1 border-[#DFE1E3] rounded-md w-20 px-2">
             <p className="cursor-pointer" onClick={handleDecrease}>-</p>

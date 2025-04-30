@@ -20,7 +20,7 @@ const Product = ({
     if (!path) return "/imgs/products/no-image-available.jpg";
     if (path.startsWith("http")) return path;
     if (path.startsWith("/")) return path;
-    return `https://clinics.soulnbody.net/pharmacy/storage/app/public/${path}`;
+    return `http://clinics.soulnbody.net/pharmacy/storage/app/public/${path}`;
   };
 
   const imageUrl = getImageUrl(cardImgPath);
@@ -67,7 +67,7 @@ const Product = ({
           <p className="text-[14px] text-[#3D3D3D] line-clamp-2">{desc}</p>
           <div className="mt-auto">
             <p className="text-[12px] text-[#3D3D3D] line-through">{oldPrice}</p>
-            <p className="text-[17px] text-[#EE446E] mb-2">{newPrice} د.س</p>
+            <p className="text-[17px] text-[#EE446E] mb-2">{newPrice} د.أ</p>
           </div>
         </div>
       </Link>

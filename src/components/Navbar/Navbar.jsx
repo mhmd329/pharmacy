@@ -15,10 +15,11 @@ import Login from "../Modals/Login";
 import SignUp from "../Modals/Signup";
 import Cart from "../Modals/Cart";
 import Search from "../Modals/Search";
-import { DotLoader } from "react-spinners"; 
+import { DotLoader } from "react-spinners";
 import { getCookie } from "cookies-next";
 import Cookies from "js-cookie";
 import { toast } from "react-hot-toast";
+import { useRef } from "react";
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
@@ -26,6 +27,8 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const { modalName } = useSelector((state) => state.modal);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [lastLogoutClick, setLastLogoutClick] = useState(0);
 
   const navItems = [
     { text: "الرئيسية", path: "/" },
@@ -38,10 +41,36 @@ const Navbar = () => {
     setNav(!nav);
   };
 
+
   const handleLogOut = () => {
+    // منع الضغط المتكرر خلال 3 ثواني سواء كان مسجل دخول أو لا
+    const now = Date.now();
+    if (now - lastLogoutClick < 4000) {
+
+      return;
+    }
+    setLastLogoutClick(now);
+
+    const token = Cookies.get("tokenUser");
+
+    if (!token) {
+      toast.error("لم يتم تسجيل الدخول بعد");
+      return;
+    }
+
+    setIsLoggingOut(true);
+
+    // تنفيذ تسجيل الخروج
     Cookies.remove("tokenUser");
-    toast.success("تم تسجيل الخروج");
-  }
+    toast.success("تم تسجيل الخروج بنجاح");
+
+    // إعادة تمكين الزر بعد 3 ثواني
+    setTimeout(() => {
+      setIsLoggingOut(false);
+    }, 3000);
+  };
+
+
   const hsndleLoader = () => {
     setIsLoading(true);
     setTimeout(() => {
@@ -99,12 +128,18 @@ const Navbar = () => {
               )}
             </span>
           </div>
-
-          <CiLogin
-            size={25}
-            className="cursor-pointer"
-            onClick={ handleLogOut}
-          />
+          <button
+            onClick={handleLogOut}
+            disabled={isLoggingOut}
+            className={`cursor-pointer hover:opacity-70 flex items-center gap-1 ${isLoggingOut ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+          >
+            {isLoggingOut ? (
+              <DotLoader size={20} color="#EE446E" />
+            ) : (
+              <CiLogin size={25} />
+            )}
+          </button>
 
           {/* Render Modals */}
           {modalName === "search" && <Search />}

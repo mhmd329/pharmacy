@@ -47,11 +47,6 @@ const CustomersTable = () => {
     currentPage * itemsPerPage
   );
 
-  const handleEditCustomer = (customerId) => {
-    setSelectedCustomer(customerId);
-    setShowForm(true);
-  };
-
   const handleSaveCustomer = (customer) => {
     if (selectedCustomer) {
       setCustomers(

@@ -49,7 +49,7 @@ const Cart = () => {
             ))}
 
             <div className="flex justify-between items-center mt-5 text-[20px]">
-              <p className="text-[#383838] text-xl">${totalPrice}</p>
+              <p className="text-[#383838] text-xl">د.أ{totalPrice}</p>
               <p className="text-[#B0A6BD] text-xl">السعر</p>
             </div>
 

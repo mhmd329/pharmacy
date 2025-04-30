@@ -117,6 +117,50 @@ export const useUpdatePro = () => {
   });
 };
 
+export const useUpdateOffer = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ formData, offerId }) => {
+      return fetcher(`offers/${offerId}/update`, {
+        method: "POST",
+        headers: {
+          ...getAuthHeaderAdmin(),
+        },
+        body: formData, // أرسل formData مباشرة هنا بدون JSON.stringify
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['offers']);
+    },
+    onError: (error) => {
+      console.error("Error updating offer:", error);
+      alert("حدث خطأ أثناء تحديث المنتج. يرجى المحاولة مرة أخرى.");
+    },
+  });
+};
+
+export const useDeleteOffer = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (offerId) => {
+      return fetcher(`offers/${offerId}/delete`, {
+        method: "DELETE",
+        headers: {
+          ...getAuthHeaderAdmin(),
+        },
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['offers']);
+    },
+    onError: (error) => {
+      console.error("Error deleting offer:", error);
+      alert("حدث خطأ أثناء حذف العرض. يرجى المحاولة مرة أخرى.");
+    },
+  });
+};
 
 
 export const useRegisterUser = () => {

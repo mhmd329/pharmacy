@@ -44,7 +44,7 @@ const ProductsTable = () => {
     if (!url) {
       return "/imgs/admin/best-selling-product.png";
     }
-    return `https://clinics.soulnbody.net/pharmacy/storage/app/public/${url}`;
+    return `http://clinics.soulnbody.net/pharmacy/storage/app/public/${url}`;
   };
 
   const handleEdit = (product) => {
@@ -102,12 +102,7 @@ const ProductsTable = () => {
               إضافة منتج
             </button>
           </Link>
-          <Link href="/PharmaAdmin/product-management/add-advertisement">
-            <button className="btn border border-[#EE446E] text-[#EE446E] px-4 py-2 rounded-lg flex items-center gap-2">
-              <GoPlus size={20} />
-              إضافة عرض
-            </button>
-          </Link>
+          
         </div>
       </div>
 
@@ -160,7 +155,7 @@ const ProductsTable = () => {
                   </td>
                   <td className="p-3 text-[#323130]">{product.size || "غير محدد"}</td>
                   <td className="p-3 text-[#323130]">
-                    <p>{product.price_after_discount} EGP</p>
+                    <p>{product.price_after_discount} د.أ</p>
                   </td>
                   <td className="p-3">{product.qty ?? "غير متوفر"}</td>
                   <td className="p-3">

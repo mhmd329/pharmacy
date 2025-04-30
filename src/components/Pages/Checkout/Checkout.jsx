@@ -197,15 +197,15 @@ const CheckoutPage = () => {
                             </div>
                             <div>
                                 <div className="flex justify-between items-center text-[20px]">
-                                    <p className="text-[#B0A6BD]">${totalPrice.toFixed(2)}</p>
+                                    <p className="text-[#B0A6BD]">د.أ {totalPrice.toFixed(2)}</p>
                                     <p className="text-[#B0A6BD]">السعر</p>
                                 </div>
                                 <div className="flex justify-between items-center text-[20px]">
-                                    <p className="text-[#B0A6BD]">${shippingCost.toFixed(2)}</p>
+                                    <p className="text-[#B0A6BD]">د.أ {shippingCost.toFixed(2)}</p>
                                     <p className="text-[#B0A6BD]">التوصيل</p>
                                 </div>
                                 <div className="flex justify-between items-center text-[20px]">
-                                    <p className="text-[#383838]">${totalAmount.toFixed(2)}</p>
+                                    <p className="text-[#383838]">د.أ{totalAmount.toFixed(2)}</p>
                                     <p className="text-[#383838]">الأجمالي</p>
                                 </div>
                             </div>
@@ -294,7 +294,7 @@ const CheckoutPage = () => {
                                         <div className="flex justify-between items-center mt-2">
                                             <p className="text-[#697586] text-sm">الكمية: {item.quantity}</p>
                                             <p className="text-[#383838] text-[18px] font-semibold">
-                                                ${item?.price || "السعر غير متوفر"}
+                                                د.أ{item?.price || "السعر غير متوفر"}
                                             </p>
                                         </div>
                                     </div>
