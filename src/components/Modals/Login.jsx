@@ -30,41 +30,19 @@ const Login = () => {
         .required("كلمة المرور مطلوبة"),
     }),
     onSubmit: (values) => {
-      console.log('Form submitted with values:', values);
       login.mutate(values);
     },
   });
 
   useEffect(() => {
-    console.log('Login effect triggered', {
-      isSuccess: login.isSuccess,
-      isError: login.isError,
-      data: login.data,
-      error: login.error
-    });
-
     if (login.isSuccess) {
-      if (login.data?.token) {
-        localStorage.setItem("token", login.data.token);
-        console.log('Token stored:', login.data.token);
-        
-        // تخزين بيانات المستخدم إذا كانت متوفرة في الاستجابة
-        if (login.data.user) {
-          localStorage.setItem("user", JSON.stringify(login.data.user));
-        }
-        
-        toast.success("تم تسجيل الدخول بنجاح");
-        queryClient.invalidateQueries();
-        formik.resetForm();
-        dispatch(closeModal());
-      } else {
-        console.warn('Login successful but no token received');
-        toast.error("حدث خطأ أثناء تسجيل الدخول - لا يوجد token");
-      }
+      toast.success("تم تسجيل الدخول بنجاح");
+      queryClient.invalidateQueries();
+      formik.resetForm();
+      dispatch(closeModal());
     }
 
     if (login.isError) {
-      console.error('Login error:', login.error);
       toast.error(login.error?.message || "فشل تسجيل الدخول. تأكد من البيانات وحاول مرة أخرى.");
     }
   }, [login.isSuccess, login.isError, login.data, login.error, dispatch, formik, queryClient]);

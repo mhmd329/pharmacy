@@ -58,7 +58,8 @@ const AddAdvertisement = () => {
     form.append("image", imageFile);
 
     try {
-      await mutateAsync({ formData: form });
+      await mutateAsync(form);
+
       setSuccessMessage("تم رفع العرض بنجاح!");
       setErrorMessage(""); // إعادة تعيين رسالة الخطأ إذا كانت هناك
     } catch (error) {

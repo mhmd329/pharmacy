@@ -96,13 +96,13 @@ const ProductsTable = () => {
         </div>
 
         <div className="btns-wrapper flex items-center gap-3 mt-4 md:mt-0">
-          <Link href="/admin/product-management/add-new-product">
+          <Link href="/PharmaAdmin/product-management/add-new-product">
             <button className="btn bg-[#EE446E] text-white px-4 py-2 rounded-lg flex items-center gap-2">
               <GoPlus size={20} />
               إضافة منتج
             </button>
           </Link>
-          <Link href="/admin/product-management/add-advertisement">
+          <Link href="/PharmaAdmin/product-management/add-advertisement">
             <button className="btn border border-[#EE446E] text-[#EE446E] px-4 py-2 rounded-lg flex items-center gap-2">
               <GoPlus size={20} />
               إضافة عرض

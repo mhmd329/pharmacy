@@ -1,1 +1,44 @@
 
+.product-gallery {
+    width: 100%;
+  }
+  
+  .main-swiper {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .thumbs-swiper {
+    width: 100%;
+    padding: 0 2rem;
+  }
+  
+  .swiper-slide {
+    opacity: 0.4;
+    transition: opacity 0.3s ease;
+  }
+  
+  .swiper-slide-thumb-active {
+    opacity: 1;
+  }
+  
+  .swiper-button-prev-custom,
+  .swiper-button-next-custom {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+  
+  .swiper-button-prev-custom:hover,
+  .swiper-button-next-custom:hover {
+    /* background-color: #f3f4f6; */
+    transform: scale(1.1);
+  }
+  
+  .swiper-button-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }

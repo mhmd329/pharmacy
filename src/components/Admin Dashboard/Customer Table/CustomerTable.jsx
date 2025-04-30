@@ -97,7 +97,7 @@ const CustomersTable = () => {
                   <th className="p-3 text-right">عدد الطلبات</th>
                   <th className="p-3 text-right">إجمالي سعر الطلبات</th>
                   <th className="p-3 text-right">العنوان</th>
-                  <th className="p-3 text-right">خيارات</th>
+                  {/* <th className="p-3 text-right">خيارات</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -115,7 +115,7 @@ const CustomersTable = () => {
                       <td className="p-3">{customer.orders}</td>
                       <td className="p-3">{customer.totalSpent}</td>
                       <td className="p-3">{customer.address}</td>
-                      <td className="p-3 flex gap-2">
+                      {/* <td className="p-3 flex gap-2">
                         <button
                           className="text-gray-500 hover:text-blue-600"
                           onClick={() => handleEditCustomer(customer.id)}
@@ -125,7 +125,7 @@ const CustomersTable = () => {
                         <button className="text-gray-500 hover:text-red-600">
                           <FaTrash />
                         </button>
-                      </td>
+                      </td> */}
                     </tr>
                   ))
                 ) : (

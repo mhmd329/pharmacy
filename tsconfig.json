@@ -37,6 +37,6 @@
     "src/components/Admin Dashboard/Product Management 2/PerfumeTable.jsx",
     "src/components/Admin Dashboard/Product Management 2/HairCareTable.jsx",
     "src/components/Admin Dashboard/Sidebar/Sidebar copy.jsx"
-, "src/app/admin/product-management/add-new-product/page.jsx", "src/app/admin/product-management/page.jsx", "src/components/Admin Dashboard/Admin Profile/sections/AdminProfileForm.jsx", "src/components/Admin Dashboard/Admin Profile/AdminProfile.tsx"  ],
+, "src/app/PharmaAdmin/product-management/add-new-product/page.jsx", "src/app/PharmaAdmin/product-management/page.jsx", "src/components/Admin Dashboard/Admin Profile/sections/AdminProfileForm.jsx", "src/components/Admin Dashboard/Admin Profile/AdminProfile.tsx"  ],
   "exclude": ["node_modules"]
 }

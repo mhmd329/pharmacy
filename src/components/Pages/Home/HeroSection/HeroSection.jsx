@@ -81,9 +81,7 @@ const HeroSection = () => {
                 className="bg-white w-[90%] max-w-4xl rounded-xl p-6 shadow-lg"
                 dir="rtl"
               >
-                <div className="flex justify-between">
-                  <IoClose size={25} className="cursor-pointer" onClick={handleClose} />
-                </div>
+                
                 <div className="grid grid-cols-1 md:flex gap-4 mb-6">
                   <input
                     type="text"

@@ -81,7 +81,7 @@ const Sidebar = () => {
 
         <nav className="mt-5">
           <ul className="space-y-2">
-            <Link href="/admin" onClick={() => handleLinkClick("/admin")} className="flex items-center gap-2">
+            <Link href="/PharmaAdmin" onClick={() => handleLinkClick("/admin")} className="flex items-center gap-2">
               <li
                 className={`flex items-center p-2 text-gray-700 ${activeLink === "/admin" ? "bg-pink-100" : "hover:bg-pink-100"
                   } rounded-lg`}
@@ -91,8 +91,8 @@ const Sidebar = () => {
             </Link>
 
             <Link
-              href="/admin/product-management"
-              onClick={() => handleLinkClick("/admin/product-management")}
+              href="/PharmaAdmin/product-management"
+              onClick={() => handleLinkClick("/PharmaAdmin/product-management")}
               className="flex items-center justify-between gap-2 w-full"
             >
               <li className="flex flex-col">
@@ -111,7 +111,7 @@ const Sidebar = () => {
               </li>
             </Link>
             {/* تحويلات مالية */}
-            <Link href="/admin/financial-transactions" onClick={() => handleLinkClick("/admin/financial-transactions")} className="flex items-center gap-2">
+            <Link href="/PharmaAdmin/financial-transactions" onClick={() => handleLinkClick("/admin/financial-transactions")} className="flex items-center gap-2">
               <li
                 className={`flex items-center p-2 text-gray-700 ${activeLink === "/admin/financial-transactions" ? "bg-pink-100" : "hover:bg-pink-100"} rounded-lg`}
               >
@@ -120,7 +120,7 @@ const Sidebar = () => {
             </Link>
 
             {/* الطلبات */}
-            <Link href="/admin/orders" onClick={() => handleLinkClick("/admin/orders")} className="flex items-center gap-2">
+            <Link href="/PharmaAdmin/orders" onClick={() => handleLinkClick("/admin/orders")} className="flex items-center gap-2">
               <li
                 className={`flex items-center p-2 text-gray-700 ${activeLink === "/admin/orders" ? "bg-pink-100" : "hover:bg-pink-100"} rounded-lg`}
               >
@@ -129,7 +129,7 @@ const Sidebar = () => {
             </Link>
 
             {/* العملاء */}
-            <Link href="/admin/customers" onClick={() => handleLinkClick("/admin/customers")} className="flex items-center gap-2">
+            <Link href="/PharmaAdmin/customers" onClick={() => handleLinkClick("/admin/customers")} className="flex items-center gap-2">
               <li
                 className={`flex items-center p-2 text-gray-700 ${activeLink === "/admin/customers" ? "bg-pink-100" : "hover:bg-pink-100"} rounded-lg`}
               >
@@ -138,7 +138,7 @@ const Sidebar = () => {
             </Link>
 
 
-            <Link href="/admin/profile" onClick={() => handleLinkClick("/admin/profile")} className="flex items-center gap-2">
+            <Link href="/PharmaAdmin/profile" onClick={() => handleLinkClick("/admin/profile")} className="flex items-center gap-2">
               <li
                 className={`flex items-center p-2 text-gray-700 ${activeLink === "/admin/profile"
                   ? "bg-pink-100"

@@ -1,6 +1,8 @@
+import { openModal } from '@/store/slices/modal';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getCookie, setCookie } from 'cookies-next';
 import { toast } from "react-hot-toast"; // تأكد إنه متركب
+import { useDispatch } from "react-redux";
 
 const baseUrl = "https://clinics.soulnbody.net/pharmacy/public/api";
 
@@ -17,16 +19,21 @@ const fetcher = async (endpoint, { method = "GET", headers = {}, body } = {}) =>
   });
 
   const data = await response.json();
+
   if (!response.ok) {
-    const errorMessage = data.message || "Unknown error";
-    console.error(`Error in ${endpoint}:`, errorMessage);
-    throw new Error(errorMessage); 
+    const errorMessage = data?.message || "Unknown error";
+
+    // نفتح مودال تسجيل الدخول لأي خطأ
+    store.useDispatch(openModal("login"));
+
+    // لو حابب تظهر رسالة Toast
+    toast.error(errorMessage);
+
+    throw new Error(errorMessage);
   }
-  
 
   return data;
 };
-
 // Mutations
 export const useLoginAdmin = () => {
   return useMutation({
@@ -64,15 +71,25 @@ export const useCreateProduct = () => {
     },
   });
 };
-
 export const useCreateOffer = () => {
   return useMutation({
     mutationFn: async (formData) => {
-      return fetcher('offers', {
-        method: "POST",
-        headers: { ...getAuthHeaderAdmin() },
-        body: formData,
-      });
+      console.log("📤 formData:", formData);
+
+      try {
+        const response = await fetcher("offers", {
+          method: "POST",
+          headers: {
+            ...getAuthHeaderAdmin(), // تأكد إنه بيرجع Authorization فقط بدون Content-Type
+          },
+          body: formData,
+        });
+
+        console.log("✅ API Response:", response);
+        return response;
+      } catch (error) {
+        console.error("❌ API Error:", error);
+      }
     },
   });
 };
@@ -394,7 +411,6 @@ export const useUserOrders = () => {
       // إذا كان الخادم يُرجع رسالة خطأ في البيانات
       if (data?.error) {
         console.error("API Error:", data.error);
-        throw new Error(data.error.message || "Failed to cancel order");
       }
 
       return data; // إرجاع البيانات إذا نجح الطلب

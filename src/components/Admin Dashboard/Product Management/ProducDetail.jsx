@@ -1,10 +1,10 @@
-const ProductDetails = ({ product, setViewingProduct}) => {
+const ProductDetails = ({ product, setViewingProduct }) => {
     if (!product) {
         return <div>لا توجد معلومات عن المنتج.</div>;
     }
 
     return (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
             <div className="bg-white p-6 rounded-lg w-96 relative">
                 <h3 className="text-xl font-bold">{product.name}</h3>
                 <p className="mt-2 text-gray-700">{product.description || "لا يوجد وصف للمنتج."}</p>
@@ -17,9 +17,10 @@ const ProductDetails = ({ product, setViewingProduct}) => {
                 <p className="mt-2 text-gray-700">
                     <strong>الوصف:</strong> {product.description || "غير محدد"}
                 </p>
-                <p className="mt-2 text-gray-700">
+                <p className="mt-2 text-gray-700 break-words">
                     <strong>رابط الصورة:</strong> {product.image || "غير متوفر"}
                 </p>
+
 
                 {/* معرض الصور */}
                 {Array.isArray(product.image_gallery) && product.image_gallery.length > 0 ? (

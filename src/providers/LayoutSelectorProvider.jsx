@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 const LayoutSelectorProvider = ({ children }) => {
     const pathname = usePathname();
-    const isAdminRoute = pathname.startsWith("/admin");
+    const isAdminRoute = pathname.startsWith("/PharmaAdmin");
     if (isAdminRoute) {
         return <AdminLayout>{children}</AdminLayout>;
     }

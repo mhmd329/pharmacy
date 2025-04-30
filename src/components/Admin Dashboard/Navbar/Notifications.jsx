@@ -80,7 +80,7 @@ const Notifications = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-2 mt-4">
-                  <Link href="/admin/orders" className="w-full sm:w-auto">
+                  <Link href="/PharmaAdmin/orders" className="w-full sm:w-auto">
                     <button className="w-full sm:w-auto bg-[#EE446E] text-white px-4 py-2 rounded-lg" onClick={() => dispatch(closeModal("Notifications"))}>
                       تجهيز
                     </button>

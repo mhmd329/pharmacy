@@ -1,19 +1,22 @@
 import { IoPrintSharp } from "react-icons/io5";
 
 const TranscDetailsRow = ({ order }) => {
-  const product = order.product || {};
-
-  const mappedDetails = [
-    {
-      id: product.product_id,
-      name: product.product_name,
-      code: order.order_code,
-      price: product.product_price,
-      quantity: product.quantity,
-      discount: product.discount,
-      total: (parseFloat(product.product_price) * parseInt(product.quantity)).toFixed(2),
-    },
-  ];
+  // فحص إذا كان المنتج موجوداً في الطلب
+  const product = order ;
+  // إذا كان المنتج غير موجود، يمكن التعامل مع المصفوفة الفارغة
+  const mappedDetails = product
+    ? [
+        {
+          id: product.order_code,
+          name: product.username,
+          code: order.order_code,
+          price: product.total_price_with_delivery,
+          quantity: product.quantity,
+          discount: product.payment_method,
+          total: (parseFloat(product.product_price) * parseInt(product.quantity)).toFixed(2),
+        },
+      ]
+    : [];
 
   return (
     <tr>
@@ -36,19 +39,16 @@ const TranscDetailsRow = ({ order }) => {
               </tr>
             </thead>
             <tbody>
-              {product.product_id ? (
+              {mappedDetails.length > 0 ? (
                 mappedDetails.map((item, idx) => (
-                  <tr
-                    key={idx}
-                    className="border-b-1 border-b-[#DBDADE] last:border-0"
-                  >
+                  <tr key={idx} className="border-b-1 border-b-[#DBDADE] last:border-0">
                     <td className="p-2">{item.id}</td>
                     <td className="p-2 font-medium">{item.name}</td>
                     <td className="p-2">{item.code}</td>
                     <td className="p-2">{item.price}</td>
                     <td className="p-2">x{item.quantity}</td>
                     <td className="p-2 text-pink-500">{item.discount}</td>
-                    <td className="p-2">{item.total}</td>
+                    <td className="p-2">{item.price}</td>
                   </tr>
                 ))
               ) : (

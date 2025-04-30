@@ -6,7 +6,7 @@ import { IoCartOutline } from "react-icons/io5";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import styles from "./Navbar.module.css";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CiLogin } from "react-icons/ci";
 import { FaTruck } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,8 @@ import Cart from "../Modals/Cart";
 import Search from "../Modals/Search";
 import { DotLoader } from "react-spinners"; 
 import { getCookie } from "cookies-next";
+import Cookies from "js-cookie";
+import { toast } from "react-hot-toast";
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
@@ -30,21 +32,23 @@ const Navbar = () => {
     { text: "من نحن", path: "/#footer" },
     { text: "منتجاتنا", path: "/our-products" },
     { text: "تواصل معنا", path: "#footer" },
-    { text: "لوحة التحكم", path: "/admin" },
   ];
 
   const handleNav = () => {
     setNav(!nav);
   };
-const handleLogOut = () =>{
-  getCookie("tokenUser").delete
-}
+
+  const handleLogOut = () => {
+    Cookies.remove("tokenUser");
+    toast.success("تم تسجيل الخروج");
+  }
   const hsndleLoader = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
   };
+
 
   return (
     <div className="nav-bar bg-[#FDFDFD] py-4 fixed z-50 top-0 left-0 w-full">
@@ -99,7 +103,7 @@ const handleLogOut = () =>{
           <CiLogin
             size={25}
             className="cursor-pointer"
-            onClick={() => dispatch(openModal("login"))}
+            onClick={ handleLogOut}
           />
 
           {/* Render Modals */}
