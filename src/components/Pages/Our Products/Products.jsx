@@ -197,7 +197,7 @@ const OurProductsPage = () => {
                   title={product.name}
                   desc={product.name}
                   newPrice={product.price_after_discount}
-                  cardImgPath={`https://clinics.soulnbody.net/pharmacy/storage/app/public/${product.image}`}
+                  cardImgPath={`http://clinics.soulnbody.net/pharmacy/storage/app/public/${product.image}`}
                 />
               ))}
             </div>
