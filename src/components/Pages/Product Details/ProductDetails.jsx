@@ -18,12 +18,13 @@ const ProductDetails = ({ product }) => {
   const mainImage = productDetails?.image
     ? `https://clinics.soulnbody.net/pharmacy/storage/app/public/${productDetails.image}`
     : "/imgs/products/no-image-available.jpg";
-
-  const galleryImages =
+ 
+    const galleryImages =
     productDetails?.gallery_images?.map(
       (img) =>
-        `https://clinics.soulnbody.net/pharmacy/storage/app/public/${img}`
+        `https://clinics.soulnbody.net/pharmacy/storage/app/public/${img.image_path}`
     ) || [];
+
 
   const token = getCookie('tokenUser'); // تحقق من التوكن
 
@@ -51,16 +52,16 @@ const ProductDetails = ({ product }) => {
     <div className="min-h-screen pt-40">
       <div dir="rtl" className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          
+
           {/* محتوى المنتج */}
           <div className="product-content flex flex-col gap-3 order-2 md:order-1 px-4 md:px-0">
-          <h2 className="text-">{productDetails?.name || "product name"}</h2>
-              <h3>
-                {productDetails?.price_after_discount
-                  ? `د.أ ${productDetails.price_after_discount}`
-                  : "السعر غير متوفر"}
-              </h3>
-          
+            <h2 className="text-">{productDetails?.name || "product name"}</h2>
+            <h3>
+              {productDetails?.price_after_discount
+                ? `د.أ ${productDetails.price_after_discount}`
+                : "السعر غير متوفر"}
+            </h3>
+
             <p className="text-[#697586] text-[14px] md:text-[16px]">
               {productDetails?.description || "لا يوجد وصف للمنتج"}
             </p>
@@ -70,14 +71,14 @@ const ProductDetails = ({ product }) => {
                 : "الحجم غير متوفر"}
             </p>
             <p className="text-[#697586] text-[14px]">موصى به</p>
-  
+
             <button
-              onClick={handleAddToCart} 
+              onClick={handleAddToCart}
               className="cursor-pointer w-full sm:w-64 rounded-xl px-2.5 py-3 bg-[#EE446E] text-white hover:bg-[#d93961] transition-colors"
             >
               اضف الى عربة التسوق
             </button>
-  
+
             {/* about product */}
             <div
               className={`w-full flex flex-col gap-3 ${!isAboutProductOpen && "pb-3 border-b-1 border-[#dfe1e3]"} `}
@@ -103,7 +104,7 @@ const ProductDetails = ({ product }) => {
                 </div>
               )}
             </div>
-  
+
             {/* product ingredients */}
             <div
               className={`w-full flex flex-col gap-3 ${!isProductIngrediendtsOpen && "pb-3 border-b-1 border-[#dfe1e3]"}`}
@@ -123,7 +124,7 @@ const ProductDetails = ({ product }) => {
                 </div>
               )}
             </div>
-  
+
             {/* how to use */}
             <div
               className={`w-full flex flex-col gap-3 ${!iHowToUseProductOpen && "pb-3 border-b-1 border-[#dfe1e3]"}`}
@@ -144,7 +145,7 @@ const ProductDetails = ({ product }) => {
               )}
             </div>
           </div>
-  
+
           {/* معرض الصور */}
           <div className="img-slider order-1 md:order-2">
             <ProductGallery
@@ -153,7 +154,7 @@ const ProductDetails = ({ product }) => {
             />
           </div>
         </div>
-  
+
         {/* المنتجات ذات الصلة */}
         <Products
           title="منتجات تمت مشاهدتها حديثا"

@@ -71,118 +71,85 @@ const AddAdvertisement = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-6 border border-gray-300 rounded-lg w-full bg-white shadow-md">
-     <div className="flex justify-end">
-     <h2 className="text-xl font-semibold mb-4 text-right w-full">صور العرض</h2>
-
-        <Link href="/PharmaAdmin/product-management">
-          <button className="bg-[#EE446E] text-white px-4 py-2 rounded-lg cursor-pointer">
-            الرجوع الي المنتجات
-          </button>
-        </Link>
-      </div>
-      {/* حقل رفع الصورة */}
-      <div
-        {...getRootProps()}
-        className={`flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-lg p-6 cursor-pointer transition-all duration-200 ease-in-out ${isDragActive
-          ? "border-red-500 bg-red-100"
-          : "border-gray-300 bg-red-50"
-          }`}
-      >
-        <input {...getInputProps()} />
-        {imageFile ? (
-          <img
-            src={URL.createObjectURL(imageFile)}
-            alt="Uploaded"
-            className="h-full max-h-32 object-contain"
-          />
-        ) : (
-          <>
-            <span className="text-3xl">📷</span>
-            <p className="text-sm mt-2">ارفع صورة العرض هنا</p>
-          </>
-        )}
-      </div>
-
-      {/* حقول الإدخال */}
-      <div className="w-full flex flex-col sm:flex-row gap-6 mt-6">
-        <div className="flex flex-col w-full sm:w-1/4">
-          <label className="text-right mb-2 font-medium">اسم العرض</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EE446E] text-right"
-            required
-          />
-        </div>
-
-        <div className="flex flex-col w-full sm:w-1/4">
-          <label className="text-right mb-2 font-medium">الوصف</label>
-          <input
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
-            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EE446E] text-right"
-            required
-          />
-        </div>
-
-        <div className="flex flex-col w-full sm:w-1/4">
-          <label className="text-right mb-2 font-medium">المنتج (Product ID)</label>
-          <input
-            type="text"
-            name="product_id"
-            value={formData.product_id}
-            onChange={handleInputChange}
-            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EE446E] text-right"
-            required
-          />
-        </div>
-
-        <div className="flex flex-col w-full sm:w-1/4">
-          <label className="text-right mb-2 font-medium">الخصم (%)</label>
-          <input
-            type="number"
-            name="discount"
-            value={formData.discount}
-            onChange={handleInputChange}
-            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EE446E] text-right"
-            required
-          />
-        </div>
-      </div>
-
-      {/* رسالة النجاح أو الخطأ */}
-      {successMessage && (
-        <div
-          className={`mt-4 text-center py-2 px-4 rounded-lg ${successMessage.includes("خطأ")
-              ? "bg-red-100 text-red-600"
-              : "bg-green-100 text-green-600"
-            }`}
-        >
-          {successMessage}
-        </div>
-      )}
-      {errorMessage && (
-        <div
-          className="mt-4 text-center py-2 px-4 rounded-lg bg-red-100 text-red-600"
-        >
-          {errorMessage}
-        </div>
-      )}
-
-      {/* زر رفع العرض */}
-      <div className="flex ml-auto w-full sm:w-auto">
-        <button
-          onClick={handleSubmit}
-          className="mt-6 bg-[#EE446E] text-white px-6 py-3 rounded-lg hover:bg-[#d13558] transition duration-200 ease-in-out w-full sm:w-auto"
-        >
-          رفع العرض
+    <div className="flex flex-col gap-6 p-6 border border-gray-200 rounded-xl bg-white shadow-lg max-w-5xl mx-auto w-full">
+    {/* Header */}
+    <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+      <h2 className="text-2xl font-bold text-right w-full sm:w-auto">إضافة عرض جديد</h2>
+      <Link href="/PharmaAdmin/product-management">
+        <button className="bg-[#EE446E] text-white px-5 py-2 rounded-lg hover:bg-[#d13558] transition">
+          الرجوع إلى المنتجات
         </button>
-      </div>
+      </Link>
     </div>
+  
+    {/* صورة العرض */}
+    <div
+      {...getRootProps()}
+      className={`flex flex-col items-center justify-center h-48 border-2 border-dashed rounded-xl cursor-pointer transition-all duration-200 ease-in-out ${
+        isDragActive ? "border-red-500 bg-red-100" : "border-gray-300 bg-gray-50"
+      }`}
+    >
+      <input {...getInputProps()} />
+      {imageFile ? (
+        <img
+          src={URL.createObjectURL(imageFile)}
+          alt="Uploaded"
+          className="h-full max-h-40 object-contain"
+        />
+      ) : (
+        <>
+          <span className="text-4xl">📷</span>
+          <p className="text-sm mt-2">ارفع صورة العرض هنا</p>
+        </>
+      )}
+    </div>
+  
+    {/* الحقول */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+      {[
+        { label: "اسم العرض", name: "name", type: "text" },
+        { label: "الوصف", name: "description", type: "text" },
+        { label: "المنتج (Product ID)", name: "product_id", type: "text" },
+        { label: "الخصم (%)", name: "discount", type: "number" },
+      ].map(({ label, name, type }) => (
+        <div key={name} className="flex flex-col">
+          <label className="text-right mb-1 font-medium">{label}</label>
+          <input
+            type={type}
+            name={name}
+            value={formData[name]}
+            onChange={handleInputChange}
+            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EE446E] text-right"
+            required
+          />
+        </div>
+      ))}
+    </div>
+  
+    {/* الرسائل */}
+    {(successMessage || errorMessage) && (
+      <div
+        className={`text-center py-3 px-4 rounded-lg ${
+          successMessage
+            ? "bg-green-100 text-green-700"
+            : "bg-red-100 text-red-600"
+        }`}
+      >
+        {successMessage || errorMessage}
+      </div>
+    )}
+  
+    {/* زر الإرسال */}
+    <div className="flex justify-end">
+      <button
+        onClick={handleSubmit}
+        className="mt-4 bg-[#EE446E] text-white px-8 py-3 rounded-lg hover:bg-[#d13558] transition"
+      >
+        رفع العرض
+      </button>
+    </div>
+  </div>
+  
   );
 };
 

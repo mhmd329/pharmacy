@@ -123,7 +123,7 @@ const Search = () => {
                                                 alt={product.name || "product"}
                                                 fill
                                                 className="object-contain rounded-t-lg"
-                                                priority
+                                                loading="lazy"
                                                 sizes="100vw"
                                             />
                                         </Link>

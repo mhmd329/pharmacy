@@ -8,7 +8,7 @@ import OrderRow from "./components/order-table-row";
 import OrderDetailsRow from "./components/order-details-row";
 import Pagination from "./components/pagination";
 import { useUpdateStatus } from "@/hooks/useAuth";
-import { statusColors } from "@/lib/constants";
+import { toast } from "react-hot-toast"; // لو مش مستوردها فوق
 const ITEMS_PER_PAGE = 5;
 
 const OrdersTable = () => {
@@ -55,11 +55,21 @@ const OrdersTable = () => {
     "delivered",
     "cancelled",
   ];
-
   const handleStatusChange = (orderId, newStatus) => {
     const formData = new FormData();
     formData.append("status", newStatus);
-    updateStatus({ orderId, formData });
+  
+    updateStatus(
+      { orderId, formData },
+      {
+        onSuccess: () => {
+          toast.success("تم تغيير الحالة بنجاح ✅");
+        },
+        onError: (error) => {
+          toast.error(`فشل في تغيير الحالة ❌: ${error?.message || "حدث خطأ ما"}`);
+        },
+      }
+    );
   };
 
   const totalPages = Math.ceil(filteredOrders.length / ITEMS_PER_PAGE);

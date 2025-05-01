@@ -6,12 +6,14 @@ import { MdOutlineNotificationsNone } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux"; // Added useSelector
 import { openModal } from "@/store/slices/modal";
 import Notifications from './Notifications'
-
+import {useOrdersData} from '@/hooks/useAuth'
+import Link from "next/link";
 const AdminNavbar = () => {
   const dispatch = useDispatch();
   const modalName = useSelector((state) => state.modal.modalName); // Access modalName from Redux
 
-  return (
+  const { data: orders, isLoading, isError } = useOrdersData();
+  const pendingOrders = orders?.filter(order => order.status === "pending") || [];  return (
     <div className="stickey top-0 left-0 w-full z-30 bg-white shadow py-4 border-b-1 border-[#E7E7E7]">
       <div className="container mx-auto px-5">
         <div className="flex md:gap-5 justify-between items-center">
@@ -29,6 +31,11 @@ const AdminNavbar = () => {
               placeholder="ابحث عن منتج"
               className="px-4 py-1 rounded-lg outline-none border-1 border-[#B0B0B0] w-full placeholder:text-[12px] md:placeholder:text-[16px]"
             />
+          </div>
+          <div className="text-[#EE446E]">
+            <Link href='/'>
+            العودة للرئيسية
+            </Link>
           </div>
           <div className="flex items-center gap-2 md:gap-4">
             <div className="admin-info flex items-center gap-2">
@@ -48,10 +55,11 @@ const AdminNavbar = () => {
               </div>
             </div>
             <div
-              className="notification-wrapper p-1 w-[26px] h-[26px] md:w-[36px] md:h-[36px] bg-[#F6F6F6] flex justify-center items-center cursor-pointer rounded-md"
+              className="notification-wrapper p-1 w-[26px] h-[26px] bg-[#EE446E] text-white md:w-[36px] md:h-[36px] flex justify-center items-center cursor-pointer rounded-md"
               onClick={() => dispatch(openModal("Notifications"))}
             >
-              <MdOutlineNotificationsNone size={30} />
+             <MdOutlineNotificationsNone size={30} />
+              <p className=" text-2xl">{pendingOrders.length}</p>
             </div>
           </div>
         </div>

@@ -25,6 +25,7 @@ const CartItem = ({ item }) => {
         src={item?.image || "/imgs/products/no-image-available.jpg"}
         alt={item?.name || "منتج"}
         width={100}
+        loading="lazy"
         height={100}
       />
       <div className="product-details flex flex-col gap-2.5 text-[#383838] w-full ps-4">

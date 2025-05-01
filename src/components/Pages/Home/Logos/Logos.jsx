@@ -51,7 +51,8 @@ const Logos = () => {
                         <Image 
                             src={logo.src} 
                             alt={`logo-${index+1}`} 
-                            width={logo.width} 
+                            width={logo.width}
+                            loading="lazy"
                             height={logo.height} 
                         />
                     </div>

@@ -44,6 +44,7 @@ const Offers = () => {
                     src={mainImage}
                     alt={offer.name || "Offer"}
                     fill
+                    loading="lazy"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-contain"
                   />

@@ -15,13 +15,13 @@ import {
 } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { useFinancial,useOrdersData,useCustomers,useOffers} from "@/hooks/useAuth";
+import { useFinancial,useOrdersData,useCustomers,useOffers,useCategories} from "@/hooks/useAuth";
 import { DotLoader } from "react-spinners"; // استيراد الـ DotLoader
 const Sidebar = () => {
   const dispatch = useDispatch();
   const { isSidebarOpen } = useSelector((state) => state.sidebar);
   const pathname = usePathname();
-  
+  const { data: categories, isLoading: isLoadingCategories } = useCategories(); 
   const { data: financialTransactions = [] } = useFinancial();
   const { data: orders = [] } = useOrdersData();
   const { data: clientsData = [] } = useCustomers();
@@ -92,6 +92,13 @@ const Sidebar = () => {
               >
                 <FaMoneyCheckAlt className="mr-2" /> ادارة المنتجات
               </li>
+            </Link>
+            <Link href="/PharmaAdmin/category-management" onClick={() => handleLinkClick("/PharmaAdmin/category-management")} className="flex items-center gap-2">
+              <li
+                className={`flex items-center p-2 text-gray-700 ${activeLink === "/PharmaAdmin/category-management" ? "bg-pink-100" : "hover:bg-pink-100"} rounded-lg`}
+              >
+                <FaMoneyCheckAlt className="mr-2" /> ادارة الفئات ({categories?.length || 0})
+             </li>
             </Link>
             <Link href="/PharmaAdmin/offer-management" onClick={() => handleLinkClick("/PharmaAdmin/offer-management")} className="flex items-center gap-2">
               <li

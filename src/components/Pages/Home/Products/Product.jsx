@@ -56,8 +56,8 @@ const Product = ({
             src={imageUrl}
             alt={title || "product"}
             fill
+            loading="lazy"
             className="object-contain rounded-t-lg"
-            priority
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
         </div>

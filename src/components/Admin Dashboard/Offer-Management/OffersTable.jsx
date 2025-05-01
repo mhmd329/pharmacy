@@ -83,7 +83,7 @@ const OffersTable = () => {
         </div>
 
         <div className="btns-wrapper flex items-center gap-3 mt-4 md:mt-0">
-          <Link href="/PharmaAdmin/product-management/add-advertisement">
+          <Link href="/PharmaAdmin/offer-management/add-advertisement">
             <button className="btn border border-[#EE446E] text-[#EE446E] px-4 py-2 rounded-lg flex items-center gap-2">
               <GoPlus size={20} />
               إضافة عرض
@@ -97,11 +97,11 @@ const OffersTable = () => {
         <table className="min-w-[800px] w-full border-collapse rounded-lg overflow-hidden">
           <thead>
             <tr className="text-gray-600 border-b border-[#D1D1D1]">
+              <th className="p-3 text-right"> معرف ID</th>
+
               <th className="p-3 text-right">المنتج</th>
               <th className="p-3 text-right">الخصم</th>
               <th className="p-3 text-right">تاريخ</th>
-              <th className="p-3 text-right">رقم المنتج</th>
-              <th className="p-3 text-right">الحالة</th>
               <th className="p-3 text-right">خيارات</th>
             </tr>
           </thead>
@@ -109,12 +109,15 @@ const OffersTable = () => {
             {filteredOffers.length > 0 ? (
               filteredOffers.map((offer) => (
                 <tr key={offer.id} className="border-b border-[#DFE1E3]">
+                  <td className="p-3">{offer.product_id ?? "غير متوفر"}</td>
+
                   <td className="p-3 flex items-center gap-3">
                     <Image
                       src={getValidImageUrl(offer.image)}
                       alt={offer.name}
                       width={41}
                       height={28}
+                      loading="lazy"
                       className="rounded-lg"
                     />
                     <div>
@@ -130,18 +133,7 @@ const OffersTable = () => {
                     )}
                     <p>{offer.updated_at}</p>
                   </td>
-                  <td className="p-3">{offer.product_id ?? "غير متوفر"}</td>
-                  <td className="p-3">
-                    <span
-                      className={`px-2 py-1 rounded-md ${
-                        offer.qty > 0
-                          ? "bg-[#B2FFB4] text-[#04910C]"
-                          : "bg-red-100 text-red-600"
-                      }`}
-                    >
-                      {offer.qty > 0 ? "متوفر" : "غير متوفر"}
-                    </span>
-                  </td>
+                  
                   <td className="p-3 flex gap-3">
                     <button
                       className="text-gray-500"

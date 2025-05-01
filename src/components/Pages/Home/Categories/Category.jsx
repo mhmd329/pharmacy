@@ -1,7 +1,7 @@
 'use client';
 import Link from "next/link";
 
-const Category = ({ title, desc, id, cardImg = "categories/make-up.jpg" }) => {
+const Category = ({ title, qty, id, cardImg = "categories/make-up.jpg" }) => {
   const getImageUrl = (path) => {
     if (!path) return "/imgs/products/no-image-available.jpg";
     if (path.startsWith("http")) return path;
@@ -27,7 +27,7 @@ const Category = ({ title, desc, id, cardImg = "categories/make-up.jpg" }) => {
               {title}
             </h3>
             <p className="text-[16px] text-white drop-shadow-md">
-              {desc} منتجات
+              {qty} منتجات
             </p>
           </div>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { useCreateProduct } from "@/hooks/useAuth";
+import { useCreateProduct, useCategories } from "@/hooks/useAuth";
 import { useDropzone } from "react-dropzone";
 
 const AddNewProduct = () => {
@@ -23,7 +23,7 @@ const AddNewProduct = () => {
   });
 
   const { mutate: createProduct, isPending, isSuccess, isError } = useCreateProduct();
-
+  const { data: categories, isLoading: isLoadingCategories } = useCategories();
   useEffect(() => {
     if (isSuccess) {
       alert("تم إضافة المنتج بنجاح");
@@ -37,7 +37,7 @@ const AddNewProduct = () => {
         size: "",
         discount: "",
         category: "",
-        subCategory: "",
+        // subCategory: "",
         skinType: "",
       });
       setImages(Array(4).fill(null));
@@ -76,10 +76,10 @@ const AddNewProduct = () => {
       newErrors.category = "القسم مطلوب";
       isValid = false;
     }
-    if (!formData.subCategory) {
-      newErrors.subCategory = "القسم الفرعي مطلوب";
-      isValid = false;
-    }
+    // if (!formData.subCategory) {
+    //   newErrors.subCategory = "القسم الفرعي مطلوب";
+    //   isValid = false;
+    // }
     if (!formData.skinType) {
       newErrors.skinType = "نوع البشرة مطلوب";
       isValid = false;
@@ -105,26 +105,26 @@ const AddNewProduct = () => {
       type: "select",
       name: "category",
       required: true,
-      options: [
-        { value: "", label: "اختر قسمًا" },
-        { value: "18", label: "عناية بالبشرة" },
-        { value: "20", label: "عناية بالشعر" },
-        { value: "12", label: "عطور" },
-        { value: "21", label: "علاجية" },
-      ],
+      options: categories
+        ? categories.map((cat) => ({
+          value: cat.id,
+          label: cat.name,
+        }))
+        : [],
+
     },
-    {
-      label: "القسم الفرعي",
-      type: "select",
-      name: "subCategory",
-      required: true,
-      options: [
-        { value: "", label: "اختر قسمًا فرعيًا" },
-        { value: "subCategory1", label: "قسم فرعي 1" },
-        { value: "subCategory2", label: "قسم فرعي 2" },
-        { value: "subCategory3", label: "قسم فرعي 3" },
-      ],
-    },
+    // {
+    //   label: "القسم الفرعي",
+    //   type: "select",
+    //   name: "subCategory",
+    //   required: true,
+    //   options: [
+    //     { value: "", label: "اختر قسمًا فرعيًا" },
+    //     { value: "subCategory1", label: "قسم فرعي 1" },
+    //     { value: "subCategory2", label: "قسم فرعي 2" },
+    //     { value: "subCategory3", label: "قسم فرعي 3" },
+    //   ],
+    // },
     {
       label: "كود المنتج",
       type: "text",
@@ -184,7 +184,7 @@ const AddNewProduct = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
@@ -193,7 +193,7 @@ const AddNewProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -216,11 +216,12 @@ const AddNewProduct = () => {
     }
 
     // Add gallery images
-    images.slice(1).forEach((img, index) => {
+    images.slice(1).forEach((img) => {
       if (img) {
-        form.append(`gallery_images[${index}]`, img.file);
+        form.append("image_gallery[]", img.file);
       }
     });
+    
 
     createProduct(form);
   };
@@ -234,7 +235,7 @@ const AddNewProduct = () => {
         data_url: URL.createObjectURL(file)
       };
       setImages(newImages);
-      
+
       // Clear image error if any
       if (errors.images) {
         setErrors({ ...errors, images: "" });
@@ -260,11 +261,10 @@ const AddNewProduct = () => {
         <h2 className="text-lg font-semibold mb-4 self-start">{label}</h2>
         <div
           {...getRootProps()}
-          className={`flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-lg p-4 cursor-pointer transition ${
-            isDragActive
-              ? "border-red-500 bg-red-100"
-              : "border-gray-300 bg-red-50"
-          }`}
+          className={`flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-lg p-4 cursor-pointer transition ${isDragActive
+            ? "border-red-500 bg-red-100"
+            : "border-gray-300 bg-red-50"
+            }`}
         >
           <input {...getInputProps()} />
           {images[index] ? (
@@ -328,9 +328,8 @@ const AddNewProduct = () => {
                       value={formData[field.name]}
                       onChange={handleInputChange}
                       onBlur={() => handleBlur(field.name)}
-                      className={`w-full p-2 border ${
-                        errors[field.name] ? "border-red-500" : "border-[#D1D1D1]"
-                      } outline-none rounded-lg`}
+                      className={`w-full p-2 border ${errors[field.name] ? "border-red-500" : "border-[#D1D1D1]"
+                        } outline-none rounded-lg`}
                       required={field.required}
                     >
                       {field.options.map((option, idx) => (
@@ -351,9 +350,8 @@ const AddNewProduct = () => {
                       value={formData[field.name]}
                       onChange={handleInputChange}
                       onBlur={() => handleBlur(field.name)}
-                      className={`w-full p-2 border ${
-                        errors[field.name] ? "border-red-500" : "border-[#D1D1D1]"
-                      } outline-none rounded-lg`}
+                      className={`w-full p-2 border ${errors[field.name] ? "border-red-500" : "border-[#D1D1D1]"
+                        } outline-none rounded-lg`}
                       required={field.required}
                     />
                     {errors[field.name] && (
@@ -366,32 +364,32 @@ const AddNewProduct = () => {
           </div>
         </div>
 
-      {/* صور المنتج */}
-<div>
-  <div className="bg-white p-6 mt-10 rounded-xl border border-gray-300">
-    <h2 className="text-lg font-bold mb-4">صور المنتج</h2>
-    {errors.images && (
-      <p className="text-red-500 text-sm mb-4">{errors.images}</p>
-    )}
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <ImageUploadField index={0} label="صورة رئيسية 1" />
-      <ImageUploadField index={1} label="صورة إضافية 2" />
-      <ImageUploadField index={2} label="صورة إضافية 3" />
-      <ImageUploadField index={3} label="صورة إضافية 4" />
-    </div>
-  </div>
+        {/* صور المنتج */}
+        <div>
+          <div className="bg-white p-6 mt-10 rounded-xl border border-gray-300">
+            <h2 className="text-lg font-bold mb-4">صور المنتج</h2>
+            {errors.images && (
+              <p className="text-red-500 text-sm mb-4">{errors.images}</p>
+            )}
+            <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
+              <ImageUploadField index={0} label="صورة رئيسية 1" />
+              <ImageUploadField index={1} label="صورة إضافية 2" />
+              <ImageUploadField index={2} label="صورة إضافية 3" />
+              <ImageUploadField index={3} label="صورة إضافية 4" />
+            </div>
+          </div>
 
-  {/* زرار رفع */}
-  <div className="flex items-center gap-3 mt-5">
-    <button
-      type="submit"
-      disabled={isPending}
-      className="bg-[#ee446e] text-white px-4 py-2 rounded-lg disabled:opacity-50"
-    >
-      {isPending ? "جاري التحميل..." : "رفع المنتج"}
-    </button>
-  </div>
-</div>
+          {/* زرار رفع */}
+          <div className="flex items-center gap-3 mt-5">
+            <button
+              type="submit"
+              disabled={isPending}
+              className="bg-[#ee446e] text-white px-4 py-2 rounded-lg disabled:opacity-50"
+            >
+              {isPending ? "جاري التحميل..." : "رفع المنتج"}
+            </button>
+          </div>
+        </div>
       </form>
     </>
   );

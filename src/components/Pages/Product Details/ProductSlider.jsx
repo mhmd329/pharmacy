@@ -40,7 +40,7 @@ const ProductSlider = () => {
               width={500}
               height={500}
               className="object-contain w-full h-auto"
-              loading="lazy"  // Enabling lazy load for images
+              loading="lazy"
             />
           </SwiperSlide>
         ))}
@@ -71,7 +71,7 @@ const ProductSlider = () => {
               width={100}
               height={100}
               className="object-contain"
-              loading="lazy"  // Lazy load for thumbnails
+              loading="lazy"
             />
           </SwiperSlide>
         ))}

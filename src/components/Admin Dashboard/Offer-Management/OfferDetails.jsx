@@ -9,13 +9,10 @@ const OfferDetails = ({ product, setViewingProduct }) => {
                 <h3 className="text-xl font-bold">{product.name}</h3>
                 <p className="mt-2 text-gray-700">{product.description || "لا يوجد وصف للمنتج."}</p>
                 <p className="mt-2 text-gray-700">
-                    <strong>السعر بعد الخصم:</strong> {product.price_after_discount} د.أ
+                    <strong>الخصم:</strong> %{product.discount  || "غير محدد"}
                 </p>
                 <p className="mt-2 text-gray-700">
-                    <strong>الحجم:</strong> {product.size || "غير محدد"}
-                </p>
-                <p className="mt-2 text-gray-700">
-                    <strong>الوصف:</strong> {product.description || "غير محدد"}
+                    <strong>الرقم التعريفي id:</strong> {product.product_id || "غير محدد"}
                 </p>
                 <p className="mt-2 text-gray-700 break-words">
                     <strong>رابط الصورة:</strong> {product.image || "غير متوفر"}

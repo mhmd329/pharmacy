@@ -1,15 +1,16 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa"; // إضافة أيقونة الحذف
 import { FiSearch } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
 import Link from "next/link";
-import { useProducts } from "@/hooks/useAuth";
+import { useProducts, useDeleteProduct, useCategories } from "@/hooks/useAuth";
 import ProductModal from './EditProductForm';
 import ProductDetails from './ProducDetail'
+import toast from "react-hot-toast";
 const ProductsTable = () => {
-  const [activeTab, setActiveTab] = useState("عناية بالبشرة");
+  const [activeTab, setActiveTab] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [viewingProduct, setViewingProduct] = useState(null);
   const [editingProduct, setEditingProduct] = useState(null);  // لتخزين المنتج الذي نعدله
@@ -23,26 +24,26 @@ const ProductsTable = () => {
     price_after_discount: "",
     image_gallery: [],
   });
+  const { data: categories, isLoading: isLoadingCategories } = useCategories();
 
+  const { mutate: deleteProduct, isLoading: isDeleting } = useDeleteProduct();
   const { data: products, isLoading, isError } = useProducts();
-  const tabs = ["عناية بالبشرة", "عناية بالشعر", "عطور", "علاجية"];
-
-  const categoryMap = {
-    "عناية بالبشرة": 18,
-    "عناية بالشعر": 20,
-    "عطور": 12,
-    "علاجية": 21,
-  };
-
+  
+  useEffect(() => {
+    if (categories && categories.length > 0 && activeTab === null) {
+      setActiveTab(categories[0].id); // أول قسم
+    }
+  }, [categories]);
   const filteredProducts = products?.filter(
     (product) =>
-      product.category_id === categoryMap[activeTab] &&
+      product.category_id === activeTab &&
       product.name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+
   const getValidImageUrl = (url) => {
     if (!url) {
-     return "/imgs/admin/best-selling-product.png";
+      return "/imgs/admin/best-selling-product.png";
     }
     return `https://clinics.soulnbody.net/pharmacy/storage/app/public/${url}`;
   };
@@ -63,12 +64,14 @@ const ProductsTable = () => {
     });
   };
 
-  
+
 
   const handleDelete = (productId) => {
-    if (window.confirm("هل أنت متأكد من أنك تريد حذف هذا المنتج؟")) {
-      // هنا يمكنك إضافة كود الحذف باستخدام API أو state
-      console.log(`حذف المنتج برقم ${productId}`);
+    if (window.confirm("هل أنت متأكد من أنك تريد حذف هذا العرض؟")) {
+      deleteProduct(productId, {
+        onSuccess: () => toast.success("تم حذف العرض بنجاح!"),
+        onError: () => toast.error("حدث خطأ أثناء حذف العرض!"),
+      });
     }
   };
 
@@ -102,33 +105,37 @@ const ProductsTable = () => {
               إضافة منتج
             </button>
           </Link>
-          
+
         </div>
       </div>
 
       {/* Tabs */}
       <div className="flex flex-col mt-8">
-        <div className="border border-[#D1D1D1] rounded-2xl p-2 flex flex-wrap items-center">
-          {tabs.map((name, index) => (
-            <button
-              key={index}
-              onClick={() => setActiveTab(name)}
-              className={`w-full sm:w-auto font-bold ${activeTab === name
-                ? "bg-[#FFE7ED] text-[#EE446E]"
-                : "bg-white text-[#737373]"
-                } px-4 py-2 rounded-lg mr-2 mb-2 sm:mb-0`}
-            >
-              {name}
-            </button>
-          ))}
+        <div className="border border-[#D1D1D1] rounded-2xl p-2 overflow-x-auto whitespace-nowrap">
+          <div className="flex w-max">
+            {categories?.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveTab(cat.id)}
+                className={`font-bold ${activeTab === cat.id
+                  ? "bg-[#FFE7ED] text-[#EE446E]"
+                  : "bg-white text-[#737373]"
+                  } px-4 py-2 rounded-lg mr-2`}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
+
 
       {/* Table */}
       <div className="overflow-x-auto max-w-full border border-[#D1D1D1] rounded-2xl mt-8">
         <table className="min-w-[800px] w-full border-collapse rounded-lg overflow-hidden">
           <thead>
             <tr className="text-gray-600 border-b border-[#D1D1D1]">
+              <th className="p-3 text-right">معرف ID</th>
               <th className="p-3 text-right">المنتج</th>
               <th className="p-3 text-right">الحجم</th>
               <th className="p-3 text-right">السعر</th>
@@ -141,11 +148,15 @@ const ProductsTable = () => {
             {filteredProducts?.length > 0 ? (
               filteredProducts.map((product) => (
                 <tr key={product.id} className="border-b border-[#DFE1E3]">
+                  <td className="p-3 text-[#323130]">
+                    <p>{product.id} </p>
+                  </td>
                   <td className="p-3 flex items-center gap-3">
                     <Image
                       src={getValidImageUrl(product.image)}
                       alt={product.name}
-                      width={41}
+                     width={41}
+                     loading="lazy"
                       height={28}
                       className="rounded-lg"
                     />

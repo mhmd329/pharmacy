@@ -29,6 +29,7 @@ const ProductModal = ({
             formData.append("description", updatedProduct.description);
             formData.append("price_before_discount", updatedProduct.price_before_discount);
             formData.append("price_after_discount", updatedProduct.price_after_discount);
+            formData.append("qty", updatedProduct.qty);
     
             // إضافة الصورة الرئيسية إذا كانت موجودة
             if (updatedProduct.imageFile) {
@@ -136,6 +137,16 @@ const ProductModal = ({
                             className="w-full p-2 mt-1 border border-[#DFE1E3] rounded-lg"
                             value={updatedProduct.name || ""}
                             onChange={(e) => setUpdatedProduct({ ...updatedProduct, name: e.target.value })}
+                        />
+                    </div>
+                    {/*  الكمية */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700"> تحديث الكمية المتاحة</label>
+                        <input
+                            type="text"
+                            className="w-full p-2 mt-1 border border-[#DFE1E3] rounded-lg"
+                            value={updatedProduct.qty || ""}
+                            onChange={(e) => setUpdatedProduct({ ...updatedProduct, qty: e.target.value })}
                         />
                     </div>
     

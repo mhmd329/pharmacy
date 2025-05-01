@@ -14,6 +14,7 @@ const OrderRow = ({ order, expandedOrderId, onToggleDetails, onStatusChange, sta
   const handleSelectStatus = (status) => {
     onStatusChange(order.order_id, status); // هنا التعديل
     setIsDropdownOpen(false);
+    
   };
 
   return (

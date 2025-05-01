@@ -131,6 +131,7 @@ const OrderStatus = () => {
                             alt={item?.product_name || "منتج"}
                             width={80}
                             height={80}
+                            loading="lazy"
                             className="rounded-lg"
                           />
 

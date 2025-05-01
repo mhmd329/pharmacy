@@ -4,7 +4,7 @@ import BestSellingProducts from "@/components/Admin Dashboard/Best Selling Produ
 
 export default function AdminMainPage() {
   return (
-    <div dir="ltr" className="flex flex-col gap-10">
+    <div dir="rtl" className="flex flex-col gap-10">
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         <StatisticsCards />
         <SalesChart />

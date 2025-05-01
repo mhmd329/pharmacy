@@ -1,8 +1,6 @@
-import { openModal } from '@/store/slices/modal';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getCookie, setCookie } from 'cookies-next';
 import { toast } from "react-hot-toast"; // تأكد إنه متركب
-import { useDispatch } from "react-redux";
 
 const baseUrl = "https://clinics.soulnbody.net/pharmacy/public/api";
 
@@ -10,7 +8,6 @@ export const getAuthHeaderAdmin = () => {
   const token = getCookie('tokenAdmin');
   return { Authorization: `Bearer ${token}` };
 };
-
 const fetcher = async (endpoint, { method = "GET", headers = {}, body } = {}) => {
   const response = await fetch(`${baseUrl}/${endpoint}`, {
     method,
@@ -21,19 +18,16 @@ const fetcher = async (endpoint, { method = "GET", headers = {}, body } = {}) =>
   const data = await response.json();
 
   if (!response.ok) {
-    const errorMessage = data?.message || "Unknown error";
+    const errorMessage = data?.message || "حدث خطأ غير متوقع";
 
-    // نفتح مودال تسجيل الدخول لأي خطأ
-    store.useDispatch(openModal("login"));
-
-    // لو حابب تظهر رسالة Toast
     toast.error(errorMessage);
 
-    throw new Error(errorMessage);
+     new Error(errorMessage);
   }
 
   return data;
 };
+
 // Mutations
 export const useLoginAdmin = () => {
   return useMutation({
@@ -74,10 +68,30 @@ export const useCreateProduct = () => {
 export const useCreateOffer = () => {
   return useMutation({
     mutationFn: async (formData) => {
-      console.log("📤 formData:", formData);
 
       try {
         const response = await fetcher("offers", {
+          method: "POST",
+          headers: {
+            ...getAuthHeaderAdmin(), // تأكد إنه بيرجع Authorization فقط بدون Content-Type
+          },
+          body: formData,
+        });
+
+        console.log("✅ API Response:", response);
+        return response;
+      } catch (error) {
+        console.error("❌ API Error:", error);
+      }
+    },
+  });
+};
+export const useCreateCategory = () => {
+  return useMutation({
+    mutationFn: async (formData) => {
+
+      try {
+        const response = await fetcher("categories", {
           method: "POST",
           headers: {
             ...getAuthHeaderAdmin(), // تأكد إنه بيرجع Authorization فقط بدون Content-Type
@@ -154,6 +168,50 @@ export const useDeleteOffer = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['offers']);
+    },
+    onError: (error) => {
+      console.error("Error deleting offer:", error);
+      alert("حدث خطأ أثناء حذف العرض. يرجى المحاولة مرة أخرى.");
+    },
+  });
+};
+
+export const useDeleteCategory = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (categoryId) => {
+      return fetcher(`categories/${categoryId}/delete`, {
+        method: "DELETE",
+        headers: {
+          ...getAuthHeaderAdmin(),
+        },
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['categories']);
+    },
+    onError: (error) => {
+      console.error("Error deleting offer:", error);
+      alert("حدث خطأ أثناء حذف العرض. يرجى المحاولة مرة أخرى.");
+    },
+  });
+};
+
+export const useDeleteProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (productId) => {
+      return fetcher(`products/${productId}/delete`, {
+        method: "DELETE",
+        headers: {
+          ...getAuthHeaderAdmin(),
+        },
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['products']);
     },
     onError: (error) => {
       console.error("Error deleting offer:", error);
@@ -355,7 +413,7 @@ export const useSearchProducts = (searchTerm) => {
     queryKey: ["search-products", searchTerm],
     queryFn: async () => {
       if (!searchTerm) return [];
-      const allProducts = await fetcher("all_products", getAuthHeaderUser());
+      const allProducts = await fetcher("pro", getAuthHeaderUser());
       return allProducts.filter(product =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
       );

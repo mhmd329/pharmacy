@@ -48,6 +48,7 @@ const BestSellingProducts = () => {
                         src={imageUrl}
                         alt={product.name}
                         width={41}
+                        loading="lazy"
                         height={28}
                         className="rounded-lg"
                       />

@@ -42,9 +42,8 @@ const Categories = () => {
               <SwiperSlide key={category.id}>
                 <Category
                   title={category.name || `Category ${index + 1}`}
-                  desc={
-                    category.products_count ||
-                    `${Math.floor(Math.random() * 10) + 1} منتجات`
+                  qty={
+                    category.products_count 
                   }
                   cardImg={category.image || `categories/make-up.jpg`}
                   id={category.id}

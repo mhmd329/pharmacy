@@ -23,10 +23,10 @@ const OurProductsPage = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [activeCategory, setActiveCategory] = useState("");
   const [sortOrder, setSortOrder] = useState("");
-
   const [selectedPrices, setSelectedPrices] = useState([]);
   const [tempSelectedPrices, setTempSelectedPrices] = useState([]);
-
+  const [currentPage, setCurrentPage] = useState(1); // الصفحة الحالية
+  const [productsPerPage] = useState(8); // عدد المنتجات في كل صفحة
   const router = useRouter();
   const searchParams = useSearchParams();
   const categoryFromURL = searchParams.get("category");
@@ -101,6 +101,16 @@ const OurProductsPage = () => {
     ? filteredProducts
     : categoryProducts?.products || [];
 
+  // حساب المنتجات المعروضة في الصفحة الحالية
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = productsToDisplay.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  const totalPages = Math.ceil(productsToDisplay.length / productsPerPage); // إجمالي الصفحات
+
+  // تغيير الصفحة
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div className="pt-40 mx-10">
       <div className="flex flex-col lg:flex-row gap-8">
@@ -166,7 +176,7 @@ const OurProductsPage = () => {
             </div>
           </div>
 
-          <div className="flex justify-start sticky top-32 z-20 my-8 overflow-x-auto pb-2 bg-white">
+          <div className="flex justify-start sticky top-20 z-20 my-8 overflow-x-auto pb-2 bg-white">
             <div className="flex gap-4">
               {categories.map(({ id, name }) => (
                 <button
@@ -183,21 +193,20 @@ const OurProductsPage = () => {
             </div>
           </div>
 
-
           {isLoading ? (
             <div className="flex justify-center py-20">
               <p>جاري تحميل المنتجات...</p>
             </div>
-          ) : productsToDisplay.length > 0 ? (
+          ) : currentProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {productsToDisplay.map((product) => (
+              {currentProducts.map((product) => (
                 <Product
                   key={product.id}
                   id={product.id}
                   title={product.name}
                   desc={product.name}
                   newPrice={product.price_after_discount}
-                  cardImgPath={`https//clinics.soulnbody.net/pharmacy/storage/app/public/${product.image}`}
+                  cardImgPath={`${product.image}`}
                 />
               ))}
             </div>
@@ -206,6 +215,21 @@ const OurProductsPage = () => {
               <p>لا توجد منتجات متاحة حسب الفلاتر المحددة</p>
             </div>
           )}
+
+          {/* Pagination */}
+          <div className="flex justify-center gap-4 mt-6 sticky bottom-0">
+            {[...Array(totalPages)].map((_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => paginate(index + 1)}
+                className={`px-3 py-1 rounded-md ${currentPage === index + 1
+                  ? "bg-[#EE446E] text-white"
+                  : "bg-white text-[#EE446E] border border-[#EE446E]"} hover:bg-[#EE446E] hover:text-white transition-colors`}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
