@@ -45,10 +45,10 @@ const CategoryTable = () => {
   };
 
   const handleDelete = (categoryId) => {
-    if (window.confirm("هل أنت متأكد من أنك تريد حذف هذا العرض؟")) {
+    if (window.confirm("هل أنت متأكد من أنك تريد حذف هذا الفئة؟")) {
       deleteOffer(categoryId, {
-        onSuccess: () => toast.success("تم حذف العرض بنجاح!"),
-        onError: () => toast.error("حدث خطأ أثناء حذف العرض!"),
+        onSuccess: () => toast.success("تم حذف الفئة بنجاح!"),
+        onError: () => toast.error("حدث خطأ أثناء حذف الفئة!"),
       });
     }
   };
@@ -175,6 +175,7 @@ const CategoryTable = () => {
           </div>
         </div>
       )}
+      
     </>
   );
 };

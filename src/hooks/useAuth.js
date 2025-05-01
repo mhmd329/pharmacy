@@ -153,6 +153,28 @@ export const useUpdateOffer = () => {
     },
   });
 };
+export const useUpdateCategory = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ formData, categoryId }) => {
+      return fetcher(`categories/${categoryId}/update`, {
+        method: "POST",
+        headers: {
+          ...getAuthHeaderAdmin(),
+        },
+        body: formData, // أرسل formData مباشرة هنا بدون JSON.stringify
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['categories']);
+    },
+    onError: (error) => {
+      console.error("Error updating offer:", error);
+      alert("حدث خطأ أثناء تحديث المنتج. يرجى المحاولة مرة أخرى.");
+    },
+  });
+};
 
 export const useDeleteOffer = () => {
   const queryClient = useQueryClient();
